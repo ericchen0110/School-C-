@@ -11,12 +11,12 @@ using namespace std;
 int main()
 {
   //read input
-  char input[80];
-  for(int i=0; i<80; i++)
+  char input[81];
+  for(int i=0; i<81; i++)
     {
       input[i] = '0';
     }
-  cin.get(input, 80);
+  cin.get(input, 81);
   cin.get();
 
   //get rid of punctuations and spaces
