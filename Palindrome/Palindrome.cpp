@@ -26,7 +26,7 @@ int main()
 
   for(int i=0; i<strlen(input); i++)
     {
-      if(isalpha(input[i]))
+      if(isalnum(input[i]))
 	{
 	  processed[count] = input[i];
 	  count++;
