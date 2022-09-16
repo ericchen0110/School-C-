@@ -1,3 +1,7 @@
+//Arthur/Name: Eric Chen
+//This program takes in a series of characters and determines if it's a palindrome
+//Date: 9/14/2022
+
 #include <iostream>
 #include <cstring>
 #include <ctype.h>
@@ -7,34 +11,29 @@ using namespace std;
 int main()
 {
   //read input
-  char input[80];
-  for(int i=0; i<80; i++)
+  char input[81];
+  for(int i=0; i<81; i++)
     {
       input[i] = '0';
     }
-  cin.get(input, 80);
+  cin.get(input, 81);
   cin.get();
 
   //get rid of punctuations and spaces
-  char processed[80];
+  char processed[strlen(input)];
   char temp[1];
   int count = 0;
-  for(int i=0; i<80; i++)
+
+  for(int i=0; i<strlen(input); i++)
     {
-      temp[0] = input[i];
-      if(temp[0] == '0')
+      if(isalpha(input[i]))
 	{
-	  break;
-	}
-      else if(isalpha(temp[0]))
-	{
-	  strncat(processed, temp, 1);
+	  processed[count] = input[i];
 	  count++;
 	}
     }
 
   //compare
-  cout << processed[0] << endl;
   int yes = 0;
   for(int i=0; i<count; i++)
     {

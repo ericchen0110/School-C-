@@ -1,3 +1,7 @@
+//Arthur/Name: Eric Chen
+//This program generates a random number from 0 to 100 and asks the user to guess the number
+//Date: 9/14/2022
+
 //Three rules:
 //1. No global variables
 //2. No strings. Not ever.
