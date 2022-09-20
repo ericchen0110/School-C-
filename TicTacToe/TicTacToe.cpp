@@ -1,64 +1,130 @@
+//Arthor name: Eric Chen
+//Data: 9/20/2022
+//This program allows to play tic tac toe and checks for wins. 
+
 #include <iostream>
-#include <string>
+#include <cstring>
 
 using namespace std;
 
-void createBoard(char board[4][4]);
+//define all functions
+void setBoard(char board[4][4]);
 void printBoard(char board[4][4]);
-void play(char board[4][4], int *turn);
+void play(char board[4][4], char *turn);
+char checkWin(char board[4][4], char *turn);
 
 int main()
 {
-  //first bracket is letter, second is num
   char board[4][4];
+
+  //0 is X, 1 is O
+  char turn = 'X';
+
+  //set the board
+  setBoard(board);
   
-  //check turns, X=0, O=1;
-  int turn = 0;
+  while(true)
+    {
+      printBoard(board);
 
-  //create the board
-  createBoard(board);
+      play(board, &turn);
+      
+      //check win
+      if(checkWin(board, &turn) == 'X')
+	{
+	  cout << "X won!" << endl;
+	  break;
+	}
+      else if(checkWin(board, &turn) == 'O')
+	{
+	  cout << "O won!" << endl;
+	  break;
+	}
 
-  //print the board
-  printBoard(board);
-
-  //user play
-  play(board, &turn);
+      //change turns
+      if(turn == 'X')
+	{
+	  turn = 'O';
+	}
+      else if(turn == 'O')
+	{
+	  turn = 'X';
+	}
+    }
 
   return 0;
 }
 
-void play(char board[4][4], int *turn)
+void play(char board[4][4], char *turn)
 {
-  char input[3];
-  if(isalpha(input[0]) && isdigit(input[1]))
+  while(true)
     {
-      //X turn
-      if(*turn == 0)
+      char input[100];
+      cin.getline(input, 100);
+
+      //check if is correct input
+      if(strlen(input) == 2 &&
+	 (input[0] == 'a' || input[0] == 'b' || input[0] == 'c') && (input[1] == '1' || input[1] == '2' || input[1] == '3'))
 	{
-	  //get input
-	  cout << "X turn" << endl << "Enter your command. (ex. a1)" << endl;
-	  cin.getline(input, 3);
-	  board[input[0]][input[1]] = 'X';
+	  if(board[input[0]-96][input[1]-48] == ' ')
+	    {
+	      //X turn
+	      if(*turn == 'X')
+		{
+		  board[input[0]-96][input[1]-48] = 'X';
+		}
+	      //O turn
+	      else if(*turn == 'O')
+		{
+		  board[input[0]-96][input[1]-48] = 'O';
+		}
+	      return;
+	    }
+	  else
+	    {
+	      cout << "This spot is already taken! Please enter another one." << endl;
+	    }
 	}
-      //O turn
-      else if(*turn == 1)
+      else
 	{
-	  cout << "O turn" << endl << "Enter your command. (ex. a1)" << endl;
-	  cin.getline(input, 3);
-	  board[input[0]][input[1]] = 'O';
+	  cout << "Please enter letter + number. Ex. a1" << endl;
 	}
-      return;
-    }
-  //check exceptions
-  else
-    {
-      cout << "The format is letter + number, ex. a1." << endl;
-      play(board, turn);
     }
 }
 
-void createBoard(char board[4][4])
+char checkWin(char board[4][4], char *turn)
 {
+  for(int i=1; i<4; i++)
+    {
+      //check rows
+      if(board[i][1] == *turn && board[i][2] == *turn && board[i][3] == *turn)
+	{
+	  return *turn;
+	}
+
+      //check columns
+      if(board[1][i] == *turn && board[2][i] == *turn && board[3][i] == *turn)
+	{
+	  return *turn;
+	}
+    }
+
+  //check diagonals
+  if(board[1][1] == *turn && board[2][2] == *turn && board[3][3] == *turn)
+    {
+      return *turn;
+    }
+  else if(board[1][3]==*turn && board[2][2]==*turn && board[3][1]==*turn)
+    {
+      return *turn;
+    }
+  return 'n';
+}
+
+void setBoard(char board[4][4])
+{
+
+  //initialize the board
   for(int i=0; i<4; i++)
     {
       board[0][i] = char(48+i);
@@ -85,5 +151,4 @@ void printBoard(char board[4][4])
 	}
       cout << endl;
     }
-  cout << endl;
 }
