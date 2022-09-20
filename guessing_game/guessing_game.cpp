@@ -1,6 +1,6 @@
 //Arthur/Name: Eric Chen
 //This program generates a random number from 0 to 100 and asks the user to guess the number
-//Date: 9/14/2022
+//Date: 9/20/2022
 
 //Three rules:
 //1. No global variables
@@ -21,12 +21,12 @@ int main()
   //creating variables
   int random_num;
   int input = 0;
+  int count = 0;
   
   while(true)
     {
       //generating the random number
       random_num = rand()%100;
-      cout << "random number: " << random_num << endl;
 
       while(true)
 	{
@@ -38,20 +38,24 @@ int main()
 	  if(input == random_num)
 	    {
 	      cout << "Congratulations! You guessed the correct number." << endl;
+	      count++;
 	      break;
 	    }
 	  //check if smaller
 	  else if(input < random_num)
 	    {
 	      cout << "Your guess is too small! Try again" << endl;
+	      count++;
 	    }
 	  //check if bigger
 	  else if(input > random_num)
 	    {
 	      cout << "Your guess is too big! Try again" << endl;
+	      count++;
 	    }
 	}
 
+      cout << "You guessed " << count << " times" << endl;
       //check if player wants to play again
       cout << "Do you want to play again? (y/n)" << endl;
       char again = ' ';
