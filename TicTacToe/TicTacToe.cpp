@@ -1,5 +1,5 @@
 //Arthor name: Eric Chen
-//Data: 9/20/2022
+//Date: 9/20/2022
 //This program allows to play tic tac toe and checks for wins. 
 
 #include <iostream>
@@ -16,39 +16,59 @@ char checkWin(char board[4][4], char *turn);
 int main()
 {
   char board[4][4];
+  int X_win = 0;
+  int O_win = 0;
 
-  //0 is X, 1 is O
-  char turn = 'X';
-
-  //set the board
-  setBoard(board);
-  
   while(true)
     {
-      printBoard(board);
+      //0 is X, 1 is O
+      char turn = 'X';
 
-      play(board, &turn);
+      //set the board
+      setBoard(board);
+  
+      while(true)
+	{
+	  printBoard(board);
+
+	  play(board, &turn);
       
-      //check win
-      if(checkWin(board, &turn) == 'X')
-	{
-	  cout << "X won!" << endl;
-	  break;
-	}
-      else if(checkWin(board, &turn) == 'O')
-	{
-	  cout << "O won!" << endl;
-	  break;
+	  //check win
+	  if(checkWin(board, &turn) == 'X')
+	    {
+	      cout << "X won!" << endl;
+	      X_win++;
+	      break;
+	    }
+	  else if(checkWin(board, &turn) == 'O')
+	    {
+	      cout << "O won!" << endl;
+	      O_win++;
+	      break;
+	    }
+
+	  //change turns
+	  if(turn == 'X')
+	    {
+	      turn = 'O';
+	    }
+	  else if(turn == 'O')
+	    {
+	      turn = 'X';
+	    }
 	}
 
-      //change turns
-      if(turn == 'X')
+      //Print out number of wins
+      cout << "X won " << X_win << " times" << endl;
+      cout << "O won " << O_win << " times" << endl;
+  
+      //ask if want to play again
+      cout << "Do you want to play again? (y/n)" << endl;
+      char input;
+      cin >> input;
+      if(input == 'n')
 	{
-	  turn = 'O';
-	}
-      else if(turn == 'O')
-	{
-	  turn = 'X';
+	  break;
 	}
     }
 
