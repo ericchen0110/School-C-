@@ -18,9 +18,12 @@ int main()
   char board[4][4];
   int X_win = 0;
   int Y_win = 0;
+  int count;
 
   while(true)
     {
+      count = 0;
+      
   //0 is X, 1 is O
   char turn = 'X';
 
@@ -32,6 +35,8 @@ int main()
       printBoard(board);
 
       play(board, &turn);
+
+      count++;
       
       //check win
       if(checkWin(board, &turn) == 'X')
@@ -47,6 +52,13 @@ int main()
 	  break;
 	}
 
+      //check tie
+      if(count == 9)
+	{
+	  cout << "Tie!" << endl;
+	  break;
+	}
+      
       //change turns
       if(turn == 'X')
 	{
