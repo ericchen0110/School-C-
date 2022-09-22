@@ -28,7 +28,7 @@ int main()
     {
       if(isalnum(input[i]))
 	{
-	  processed[count] = input[i];
+	  processed[count] = tolower(input[i]);
 	  count++;
 	}
     }
