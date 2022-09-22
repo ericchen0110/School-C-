@@ -1,5 +1,5 @@
 //Arthor name: Eric Chen
-//Date: 9/20/2022
+//Data: 9/22/2022
 //This program allows to play tic tac toe and checks for wins. 
 
 #include <iostream>
@@ -17,60 +17,67 @@ int main()
 {
   char board[4][4];
   int X_win = 0;
-  int O_win = 0;
+  int Y_win = 0;
 
   while(true)
     {
-      //0 is X, 1 is O
-      char turn = 'X';
+  //0 is X, 1 is O
+  char turn = 'X';
 
-      //set the board
-      setBoard(board);
+  //set the board
+  setBoard(board);
   
-      while(true)
-	{
-	  printBoard(board);
+  while(true)
+    {
+      printBoard(board);
 
-	  play(board, &turn);
+      play(board, &turn);
       
-	  //check win
-	  if(checkWin(board, &turn) == 'X')
-	    {
-	      cout << "X won!" << endl;
-	      X_win++;
-	      break;
-	    }
-	  else if(checkWin(board, &turn) == 'O')
-	    {
-	      cout << "O won!" << endl;
-	      O_win++;
-	      break;
-	    }
-
-	  //change turns
-	  if(turn == 'X')
-	    {
-	      turn = 'O';
-	    }
-	  else if(turn == 'O')
-	    {
-	      turn = 'X';
-	    }
+      //check win
+      if(checkWin(board, &turn) == 'X')
+	{
+	  cout << "X won!" << endl;
+	  X_win++;
+	  break;
+	}
+      else if(checkWin(board, &turn) == 'O')
+	{
+	  cout << "O won!" << endl;
+	  Y_win++;
+	  break;
 	}
 
-      //Print out number of wins
-      cout << "X won " << X_win << " times" << endl;
-      cout << "O won " << O_win << " times" << endl;
+      //change turns
+      if(turn == 'X')
+	{
+	  turn = 'O';
+	}
+      else if(turn == 'O')
+	{
+	  turn = 'X';
+	}
+    }
+
+  //Print out number of wins
+  cout << "X won " << X_win << " times" << endl;
+  cout << "Y won " << Y_win << " times" << endl;
   
-      //ask if want to play again
-      cout << "Do you want to play again? (y/n)" << endl;
-      char input;
+  //ask if want to play again
+  cout << "Do you want to play again? (y/n)" << endl;
+  char input;
+  while(true)
+    {
       cin >> input;
-      if(input == 'n')
+      if(input == 'n' || input == 'y')
 	{
 	  break;
 	}
     }
+    if(input == 'n')
+      {
+        break;
+      }
+  }
 
   return 0;
 }
