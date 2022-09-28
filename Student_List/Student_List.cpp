@@ -6,7 +6,7 @@ using namespace std;
 
 //defin the struct
 struct Student {
-  char *fist_name;
+  char *first_name;
   char *last_name;
   int id;
   float gpa;
@@ -18,15 +18,15 @@ void print_fun(vector<Student*> *student_vector);
 
 int main()
 {
-  vector<Student*> student_vector;
-  
   //get input
   char *input;
   cin >> input;
+  vector<Student*> student_vector;
   if(strcmp(input, "ADD") == 0)
     {
       //ADD
       add(&student_vector);
+      cout << "first name: " << student_vector[0]->*first_name;
     }
   else if(strcmp(input , "PRINT") == 0)
     {
@@ -38,20 +38,31 @@ int main()
 void add(vector<Student*> *student_vector)
 {
   //define all variables
-  char first_name[21];
-  char last_name[21];
+  char first_name[80];
+  char last_name[80];
   int id;
-  int GPA;
+  float GPA;
 
+  
   //get input
   cout << "First name: ";
-  cin.get(first_name, 20);
-  cout << "\nLast name: ";
-  cin >> *last_name;
-  cout << "\nStudent ID: ";
+  cin >> first_name;
+  cout << "Last name: ";
+  cin >> last_name;
+  cout << "Student ID: ";
   cin >> id;
-  cout << "\nGPA: ";
+  cout << "GPA: ";
   cin >> GPA;
+
+  //Add new student
+  Student new_student;
+  new_student.first_name = first_name;
+  new_student.last_name = last_name;
+  new_student.id = id;
+  new_student.gpa = GPA;
+
+  //add to the vector
+  student_vector->push_back(&new_student);
 }
 
 void print_fun(vector<Student*> *student_vector)
