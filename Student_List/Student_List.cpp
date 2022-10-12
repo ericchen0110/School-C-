@@ -18,20 +18,23 @@ void print_fun(vector<Student*> *student_vector);
 
 int main()
 {
-  //get input
-  char *input;
-  cin >> input;
-  vector<Student*> *student_vector = new vector<Student*>();
-  if(strcmp(input, "ADD") == 0)
-    {
-      //ADD
-      add(student_vector);
-      cout << "first name: " << (*student_vector)[0]->first_name << endl;
-    }
-  else if(strcmp(input , "PRINT") == 0)
-    {
-      //PRINT
-      print_fun(student_vector);
+  while(true)
+    { 
+      cout << "Type ADD, PRINT, or DELETE" << endl;
+      //get input
+      char *input;
+      cin >> input;
+      vector<Student*> *student_vector = new vector<Student*>();
+      if(strcmp(input, "ADD") == 0)
+	{
+	  //ADD
+	  add(student_vector);
+	}
+      else if(strcmp(input , "PRINT") == 0)
+	{
+	  //PRINT
+	  print_fun(student_vector);
+	}
     }
 }
 
@@ -49,7 +52,7 @@ void add(vector<Student*> *student_vector)
   cin >> first_name;
   cout << "Last name: ";
   cin >> last_name;
-  cout << "Student ID: ";
+  cout << "Student ID: "; 
   cin >> id;
   cout << "GPA: ";
   cin >> GPA;
@@ -60,8 +63,6 @@ void add(vector<Student*> *student_vector)
   new_student->last_name = last_name;
   new_student->id = id;
   new_student->gpa = GPA;
-
-  //cout << new_student.first_name << endl;
   
   //add to the vector
   student_vector->push_back(new_student);
@@ -69,5 +70,10 @@ void add(vector<Student*> *student_vector)
 
 void print_fun(vector<Student*> *student_vector)
 {
-  
+  cout << "size: " << student_vector->size() << endl;
+  for(int i=0; i<student_vector->size(); i++)
+    {
+       cout << (*student_vector)[i]->first_name << " " << (*student_vector)[i]->last_name << ", " << (*student_vector)[i]->id << ", " << (*student_vector)[0]->gpa << endl;
+    }
+	return;
 }
