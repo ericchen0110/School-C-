@@ -1,3 +1,7 @@
+//Name: Eric Chen
+//Date: 10/19/2022
+//This program
+
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -15,25 +19,39 @@ struct Student {
 //define functions
 void add(vector<Student*> *student_vector);
 void print_fun(vector<Student*> *student_vector);
+void delete_fun(vector<Student*> *student_vector);
 
 int main()
 {
+  //create the vector
+  vector<Student*> *student_vector = new vector<Student*>();
+  
   while(true)
     { 
-      cout << "Type ADD, PRINT, or DELETE" << endl;
+      cout << "Type ADD, PRINT, or DELETE. Type QUIT if you want to quit." << endl;
       //get input
       char *input;
       cin >> input;
-      vector<Student*> *student_vector = new vector<Student*>();
+      
       if(strcmp(input, "ADD") == 0)
 	{
 	  //ADD
 	  add(student_vector);
 	}
-      else if(strcmp(input , "PRINT") == 0)
+      else if(strcmp(input, "PRINT") == 0)
 	{
 	  //PRINT
 	  print_fun(student_vector);
+	}
+      else if(strcmp(input, "DELETE") == 0)
+	{
+	  //DELETE
+	  delete_fun(student_vector);
+	}
+      else if(strcmp(input, "QUIT") == 0)
+	{
+	  //break
+	  break;
 	}
     }
 }
@@ -60,20 +78,55 @@ void add(vector<Student*> *student_vector)
   //Add new student
   Student *new_student = new Student();
   strcpy(new_student->first_name, first_name);
-  new_student->last_name = last_name;
+  strcpy(new_student->last_name, last_name);
   new_student->id = id;
   new_student->gpa = GPA;
   
   //add to the vector
   student_vector->push_back(new_student);
+
+  //print out message
+  cout << "Student added" << endl;
 }
 
 void print_fun(vector<Student*> *student_vector)
 {
-  cout << "size: " << student_vector->size() << endl;
   for(int i=0; i<student_vector->size(); i++)
     {
-       cout << (*student_vector)[i]->first_name << " " << (*student_vector)[i]->last_name << ", " << (*student_vector)[i]->id << ", " << (*student_vector)[0]->gpa << endl;
+      //print
+       cout << (*student_vector)[i]->first_name << " " << (*student_vector)[i]->last_name << ", " << (*student_vector)[i]->id << ", " << (*student_vector)[i]->gpa << endl;
     }
 	return;
+}
+
+void delete_fun(vector<Student*> *student_vector)
+{
+  //get input
+  int id;
+  cout << "Student ID of the student that you want to DELETE: ";
+  cin >> id;
+
+  bool exist = false;
+  for(int i=0; i<student_vector->size(); i++)
+    {
+      if((*student_vector)[i]->id == id)
+	{
+	  //delete student
+	  exist = true;
+	  delete *(student_vector->begin()+i);
+	  student_vector->erase(student_vector->begin()+i);
+	}
+    }
+
+  //print out message
+  if(!exist)
+    {
+      cout << "The student does not exist" << endl;
+    }
+  else
+    {
+      cout << "Student deleted" << endl;
+    }
+  
+  return;
 }
