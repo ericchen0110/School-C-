@@ -1,8 +1,9 @@
 //Name: Eric Chen
-//Date: 10/19/2022
-//This program
+//Date: 10/21/2022
+//This program allows the user to ADD, PRINT, and DELETE students from a student list. 
 
 #include <iostream>
+#include <iomanip>
 #include <cstring>
 #include <vector>
 
@@ -94,7 +95,7 @@ void print_fun(vector<Student*> *student_vector)
   for(int i=0; i<student_vector->size(); i++)
     {
       //print
-       cout << (*student_vector)[i]->first_name << " " << (*student_vector)[i]->last_name << ", " << (*student_vector)[i]->id << ", " << (*student_vector)[i]->gpa << endl;
+      cout << (*student_vector)[i]->first_name << " " << (*student_vector)[i]->last_name << ", " << (*student_vector)[i]->id << ", " << fixed << setprecision(2) << (*student_vector)[i]->gpa << endl;
     }
 	return;
 }
