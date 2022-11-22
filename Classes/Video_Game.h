@@ -1,5 +1,11 @@
 #include <iostream>
+
+#ifndef PARENT_H
+#define PARENT_H
+
 #include "Parent.h"
+
+#endif
 
 class video_game : public parent
 {
@@ -10,4 +16,4 @@ class video_game : public parent
 private:
   char* publisher;
   float rating;
-}
+};
