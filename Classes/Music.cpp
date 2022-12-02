@@ -31,3 +31,8 @@ int music::get_duration()
 {
   return duration;
 }
+
+char* music::get_type()
+{
+  return "music";
+}

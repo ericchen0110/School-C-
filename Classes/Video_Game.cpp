@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #ifndef PARENT_H
 #define PARENT_H
 

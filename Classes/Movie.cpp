@@ -31,3 +31,8 @@ int movie::get_duration()
 {
   return duration;
 }
+
+char* movie::get_type()
+{
+  return "movie";
+}
