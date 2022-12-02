@@ -13,8 +13,7 @@ class video_game : public parent
   video_game(char* title, int year, char* publisher, float rating);
   virtual char* get_publisher();
   virtual float get_rating();
-  virtual char* get_type();
-private:
-  char* publisher;
+ private:
+  char* publisher = new char[81];
   float rating;
 };

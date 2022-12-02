@@ -15,9 +15,9 @@
 
 video_game::video_game(char* title, int year, char* publisher, float rating):parent(title, year)
 {
-  this->publisher = publisher;
+  strcpy(this->publisher, publisher);
   this->rating = rating;
-  cout << "Video game constructor" << endl;
+  type = 1;
 }
 
 char* video_game::get_publisher()

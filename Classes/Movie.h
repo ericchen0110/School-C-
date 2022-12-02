@@ -12,10 +12,9 @@ class movie : public parent
   virtual float get_rating();
   virtual char* get_director();
   virtual int get_duration();
-  virtual char* get_type();
   
  private:
   float rating;
-  char* director;
+  char* director = new char[81];
   int duration;
 };

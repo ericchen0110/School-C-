@@ -29,37 +29,48 @@ using namespace std;
 void add(vector<parent*> *media_vector);
 void search(vector<parent*> *media_vector);
 void Delete(vector<parent*> *media_vector);
+void Print(parent* media);
 
 int main()
 {
-  //input
-  char input[81];
-  cout << "What do you want to do? (ADD, SEARCH, DELETE, QUIT)" << endl;
-  cin.get(input, 81);
-  cin.get();
-
   //create vector
   vector<parent*> *media_vector = new vector<parent*>();
+  
+  while(true)
+    {
+      for(int i=0; i<70; i++)
+	{
+	  cout << "-";
+	}
+      cout << endl;
+      
+      //input
+      char input[81];
+      cout << "What do you want to do? (ADD, SEARCH, DELETE, QUIT)" << endl;
+      cin.get(input, 81);
+      cin.get();
 
-  //check input
-  if(strcmp(input, "ADD") == 0)
-    {
-      //ADD
-      add(media_vector);
-    }
-  else if(strcmp(input, "SEARCH") == 0)
-    {
-      //SEARCH
-      search(media_vector);
-    }
-  else if(strcmp(input, "DELETE") == 0)
-    {
-      //DELETE
-      Delete(media_vector);
-    }
-  else if(strcmp(input, "QUIT") == 0)
-    {
-      //QUIT
+      //check input
+      if(strcmp(input, "ADD") == 0)
+	{
+	  //ADD
+	  add(media_vector);
+	}
+      else if(strcmp(input, "SEARCH") == 0)
+	{
+	  //SEARCH
+	  search(media_vector);
+	}
+      else if(strcmp(input, "DELETE") == 0)
+	{
+	  //DELETE
+	  Delete(media_vector);
+	}
+      else if(strcmp(input, "QUIT") == 0)
+	{
+	  //QUIT
+	  break;
+	}
     }
 }
 
@@ -108,8 +119,6 @@ void add(vector<parent*> *media_vector)
 
       movie* new_movie = new movie(title, year, rating, director, duration);
       media_vector->push_back(new_movie);
-
-      cout < new_movie->get_type() << endl;
     }
   else if(strcmp(type, "video_game") == 0)
     {
@@ -127,6 +136,7 @@ void add(vector<parent*> *media_vector)
       cin.get();
 
       video_game* new_videogame =  new video_game(title, year, publisher, rating);
+      cout << "type: " << new_videogame->get_type() << endl;
       media_vector->push_back(new_videogame);
     }
   else if(strcmp(type, "music") == 0)
@@ -155,7 +165,7 @@ void add(vector<parent*> *media_vector)
     }
 }
 
-void search(vector* <parent*> media_vector)
+void search(vector <parent*> *media_vector)
 {
   //title or year
   cout << "Do you want to search by title or year?" << endl;
@@ -163,29 +173,86 @@ void search(vector* <parent*> media_vector)
   cin.get(input, 81);
   cin.get();
 
-  if(strcmp(input, "title") = 0)
+  if(strcmp(input, "title") == 0)
     {
       //title
       cout << "What is the title?" << endl;
       char input_title[81];
       cin.get(input_title, 81);
       cin.get();
-      
-      /*for(int i=0; i < media_vector->size(); i++)
+
+      for(int i=0; i < media_vector->size(); i++)
 	{
-	  if(strcmp((*media_vector)[i]->title, input_title) = 0)
+	  if(strcmp((*media_vector)[i]->get_title(), input_title) == 0)
 	    {
-	      cout 
+	      if((*media_vector)[i]->get_type() == 1)
+		{
+		  //video game
+		  Print((*media_vector)[i]);
+		}
+	      else if((*media_vector)[i]->get_type() == 2)
+		{
+		  //movie
+		  cout << "movie" << endl;
+		}
+	      else if((*media_vector)[i]->get_type() == 3)
+		{
+		  //music
+		  cout << "music" << endl;
+		}
 	    }
-	}*/
+	}
     }
-  else if(strcmp(input, "year") = 0)
+  else if(strcmp(input, "year") == 0)
     {
       //year
     }
 }
 
-void Delete(vector* <parent*> media_vector)
+void Print(parent* media)
+{
+  cout << endl;
+  
+  if(media->get_type() == 1)
+    {
+      //video game
+      video_game *v = static_cast<video_game*>(media);
+
+      //print
+      cout << "Type: video game" << endl;
+      cout << "Title: " << v->get_title() << endl;
+      cout << "Year: " << v->get_year() << endl;
+      cout << "Publisher: " << v->get_publisher() << endl;
+      cout << "Rating: " << v->get_rating() << endl;
+    }
+  else if(media->get_type() == 2)
+    {
+      //movie
+      movie *v = static_cast<movie*>(media);
+      
+      cout << "Type: movie" << endl;
+      cout << "Title: " << v->get_title() << endl;
+      cout << "Year: " << v->get_year() << endl;
+      cout << "Director: " << v->get_director() << endl;
+      cout << "Duration: " << v->get_duration() << " minutes" << endl;
+      cout << "Rating: " << v->get_rating() << endl;
+    }
+  else if(media->get_type() == 3)
+    {
+      //music
+      music *v = static_cast<music*>(media);
+      
+      cout << "Type: music" << endl;
+      cout << "Title: " << v->get_title() << endl;
+      cout << "Year: " << v->get_year() << endl;
+      cout << "Artist: " << v->get_artist() << endl;
+      cout << "Duration: " << v->get_duration() << " minutes" << endl;
+      cout << "Publisher: " << v->get_publisher() << endl;
+    }
+
+}
+
+void Delete(vector <parent*> *media_vector)
 {
   
 }

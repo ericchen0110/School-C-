@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 #ifndef PARENT_H
 #define PARENT_H
 
@@ -8,9 +9,8 @@
 
 parent::parent(char* title, int year)
 {
-  this->title = title;
+  strcpy(this->title, title);
   this->year = year;
-  cout << "parent constructor" << endl;
 }
 
 char* parent::get_title()
@@ -21,4 +21,9 @@ char* parent::get_title()
 int parent::get_year()
 {
   return year;
+}
+
+int parent::get_type()
+{
+  return type;
 }

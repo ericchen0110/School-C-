@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #ifndef PARENT_H
 #define PARENT_H
@@ -13,8 +14,9 @@
 movie::movie(char* title, int year, float rating, char* director, int duration):parent(title, year)
 {
   this->rating = rating;
-  this->director = director;
+  strcpy(this->director, director);
   this->duration = duration;
+  type = 2;
 }
 
 float movie::get_rating()
@@ -30,9 +32,4 @@ char* movie::get_director()
 int movie::get_duration()
 {
   return duration;
-}
-
-char* movie::get_type()
-{
-  return "movie";
 }

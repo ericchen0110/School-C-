@@ -7,7 +7,9 @@ class parent{
   parent(char* title, int year);
   virtual char* get_title();
   virtual int get_year();
+  virtual int get_type();
  protected:
-  char* title;
+  char* title = new char[81];
   int year;
+  int type;
 };

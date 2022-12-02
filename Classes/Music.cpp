@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 #ifndef PARENT_H
 #define PARENT_H
@@ -12,9 +13,10 @@
 
 music::music(char* title, int year, char* artist, char* publisher, int duration):parent(title, year)
 {
-  this->artist = artist;
-  this->publisher = publisher;
+  strcpy(this->artist, artist);
+  strcpy(this->publisher, publisher);
   this->duration = duration;
+  type = 3;
 }
 
 char* music::get_artist()
@@ -30,9 +32,4 @@ char* music::get_publisher()
 int music::get_duration()
 {
   return duration;
-}
-
-char* music::get_type()
-{
-  return "music";
 }

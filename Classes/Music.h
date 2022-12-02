@@ -12,9 +12,8 @@ class music : public parent
   virtual char* get_artist();
   virtual char* get_publisher();
   virtual int get_duration();
-  virtual char* get_type();
  private:
-  char* artist;
-  char* publisher;
+  char* artist = new char[81];
+  char* publisher = new char[81];
   int duration;
 };
