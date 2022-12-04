@@ -9,6 +9,7 @@ class music : public parent
 {
  public:
   music(char* title, int year, char* artist, char* publisher, int duration);
+  ~music();
   virtual char* get_artist();
   virtual char* get_publisher();
   virtual int get_duration();

@@ -20,6 +20,12 @@ video_game::video_game(char* title, int year, char* publisher, float rating):par
   type = 1;
 }
 
+video_game::~video_game()
+{
+  delete[] title;
+  delete[] publisher;
+}
+
 char* video_game::get_publisher()
 {
   return publisher;

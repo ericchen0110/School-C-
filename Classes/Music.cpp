@@ -19,6 +19,13 @@ music::music(char* title, int year, char* artist, char* publisher, int duration)
   type = 3;
 }
 
+music::~music()
+{
+  delete[] title;
+  delete[] artist;
+  delete[] publisher;
+}
+
 char* music::get_artist()
 {
   return artist;

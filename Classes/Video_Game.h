@@ -11,6 +11,7 @@ class video_game : public parent
 {
  public:
   video_game(char* title, int year, char* publisher, float rating);
+  ~video_game();
   virtual char* get_publisher();
   virtual float get_rating();
  private:

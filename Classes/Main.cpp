@@ -1,3 +1,7 @@
+//This is the main cpp file of the Classes program, users can add, search, and delete medias in the database
+//Date: December 3, 2022
+//Written by Eric Chen
+
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -28,7 +32,7 @@ using namespace std;
 //define functions
 void add(vector<parent*> *media_vector);
 void search(vector<parent*> *media_vector);
-void Delete(vector<parent*> *media_vector);
+void Delete(vector<parent*> *media_vector, vector<int> vec);
 void Print(parent* media);
 
 int main()
@@ -46,7 +50,7 @@ int main()
       
       //input
       char input[81];
-      cout << "What do you want to do? (ADD, SEARCH, DELETE, QUIT)" << endl;
+      cout << "What do you want to do? (ADD, SEARCH, QUIT, you can delete the media in the SEARCH function)" << endl;
       cin.get(input, 81);
       cin.get();
 
@@ -61,11 +65,6 @@ int main()
 	  //SEARCH
 	  search(media_vector);
 	}
-      else if(strcmp(input, "DELETE") == 0)
-	{
-	  //DELETE
-	  Delete(media_vector);
-	}
       else if(strcmp(input, "QUIT") == 0)
 	{
 	  //QUIT
@@ -76,12 +75,24 @@ int main()
 
 void add(vector<parent*> *media_vector)
 {
-  //media type
   char type[81];
-  cout << "What type of media do you want to add? (movie, music, video_game)" << endl;
-  cin.get(type, 81);
-  cin.get();
-  
+  while(true)
+    {
+      //media type
+      cout << "What type of media do you want to add? (movie, music, video_game)" << endl;
+      cin.get(type, 81);
+      cin.get();
+
+      if(strcmp(type, "movie") != 0 && strcmp(type, "music") != 0 && strcmp(type, "video_game") != 0)
+	{
+	  cout << "\nPlease enter movie, music, or video_game" << endl;
+	}
+      else
+	{
+	  break;
+	}
+    }
+      
   //ask for input to each field
   //title
   cout << "What is the title?" << endl;
@@ -172,41 +183,94 @@ void search(vector <parent*> *media_vector)
   char input[81];
   cin.get(input, 81);
   cin.get();
+  vector <int> position;
+  bool exist = false;
 
-  if(strcmp(input, "title") == 0)
-    {
-      //title
-      cout << "What is the title?" << endl;
-      char input_title[81];
-      cin.get(input_title, 81);
-      cin.get();
-
-      for(int i=0; i < media_vector->size(); i++)
+      if(strcmp(input, "title") == 0)
 	{
-	  if(strcmp((*media_vector)[i]->get_title(), input_title) == 0)
+	  //title
+	  cout << "What is the title?" << endl;
+	  char input_title[81];
+	  cin.get(input_title, 81);
+	  cin.get();
+
+	  for(int i=0; i < media_vector->size(); i++)
 	    {
-	      if((*media_vector)[i]->get_type() == 1)
+	      if(strcmp((*media_vector)[i]->get_title(), input_title) == 0)
 		{
-		  //video game
-		  Print((*media_vector)[i]);
-		}
-	      else if((*media_vector)[i]->get_type() == 2)
-		{
-		  //movie
-		  cout << "movie" << endl;
-		}
-	      else if((*media_vector)[i]->get_type() == 3)
-		{
-		  //music
-		  cout << "music" << endl;
+		  position.push_back(i);
+		  if((*media_vector)[i]->get_type() == 1)
+		    {
+		      //video game
+		      Print((*media_vector)[i]);
+		    }
+		  else if((*media_vector)[i]->get_type() == 2)
+		    {
+		      //movie
+		      Print((*media_vector)[i]);
+		    }
+		  else if((*media_vector)[i]->get_type() == 3)
+		    {
+		      //music
+		      Print((*media_vector)[i]);
+		    }
+		  exist = true;
 		}
 	    }
 	}
-    }
-  else if(strcmp(input, "year") == 0)
-    {
-      //year
-    }
+      else if(strcmp(input, "year") == 0)
+	{
+	  
+	  //year
+	  cout << "What is the year?" << endl;
+	  int input_year;
+	  cin >> input_year;
+	  cin.get();
+
+	  for(int i=0; i < media_vector->size(); i++)
+	    {
+	      position.push_back(i);
+	      
+	      if((*media_vector)[i]->get_year() == input_year)
+		{
+		  if((*media_vector)[i]->get_type() == 1)
+		    {
+		      //video game
+		      Print((*media_vector)[i]);
+		    }
+		  else if((*media_vector)[i]->get_type() == 2)
+		    {
+		      //movie
+		      Print((*media_vector)[i]);
+		    }
+		  else if((*media_vector)[i]->get_type() == 3)
+		    {
+		      //music
+		      Print((*media_vector)[i]);
+		    }
+		  exist = true;
+		}
+	    }
+
+
+      if(exist)
+	{
+	  //delete
+	  char delete_input[81];
+	  cout << "\nDo you want to delete these media? (Yes or No)" << endl;
+	  cin.get(delete_input, 81);
+	  cin.get();
+
+	  if(strcmp(delete_input, "Yes") == 0)
+	    {
+	      Delete(media_vector, position);
+	    }
+	 }
+      else if(!exist)
+	{
+	  cout << "\nThe media you entered does not exist.\n";
+	}
+	}
 }
 
 void Print(parent* media)
@@ -252,7 +316,36 @@ void Print(parent* media)
 
 }
 
-void Delete(vector <parent*> *media_vector)
+ void Delete(vector <parent*> *media_vector, vector <int> vec)
 {
-  
+  vector<parent*>:: iterator mIterator;
+
+  for(int i=0; i<vec.size(); i++)
+    {
+      for(mIterator = media_vector->begin(); mIterator < media_vector->end(); mIterator += vec[i])
+	{
+	  //video game
+	  if((*mIterator)->get_type() == 1)
+	    {
+	      video_game *v = static_cast<video_game*>(*mIterator);
+	      delete v;
+	      media_vector->erase(mIterator);
+	    }
+	  //(*media_vector)[vec[i]]->~parent();
+	  else if((*mIterator)->get_type() == 2)
+	    {
+	      //movie
+	      movie *m = static_cast<movie*>(*mIterator);
+	      delete m;
+	      media_vector->erase(mIterator);
+	    }
+	  else if((*mIterator)->get_type() == 3)
+	    {
+	      //music
+	      music *m = static_cast<music*>(*mIterator);
+	      delete m;
+	      media_vector->erase(mIterator);
+	    }
+	}
+    }
 }
