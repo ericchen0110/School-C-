@@ -9,7 +9,6 @@ class movie : public parent
 {
  public:
   movie(char* title, int year, float rating, char* director, int duration);
-  ~movie();
   virtual float get_rating();
   virtual char* get_director();
   virtual int get_duration();
