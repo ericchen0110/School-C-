@@ -52,6 +52,10 @@ int main()
       char input[81];
       cout << "What do you want to do? (ADD, SEARCH, QUIT, you can delete the media in the SEARCH function)" << endl;
       cin.get(input, 81);
+      if(!cin)
+	{
+	  cin.clear();
+	}
       cin.get();
 
       //check input
@@ -81,6 +85,10 @@ void add(vector<parent*> *media_vector)
       //media type
       cout << "What type of media do you want to add? (movie, music, video_game)" << endl;
       cin.get(type, 81);
+      if(!cin)
+	{
+	  cin.clear();
+	}
       cin.get();
 
       if(strcmp(type, "movie") != 0 && strcmp(type, "music") != 0 && strcmp(type, "video_game") != 0)
@@ -95,10 +103,22 @@ void add(vector<parent*> *media_vector)
       
   //ask for input to each field
   //title
-  cout << "What is the title?" << endl;
   char title[81];
-  cin.get(title, 81);
-  cin.get();
+  while(true)
+    {
+      cout << "What is the title?" << endl;
+      cin.get(title, 81);
+      cin.get();
+      if(!cin)
+	{
+	  cin.clear();
+	}
+      else
+	{
+	  break;
+	}
+      cout << title << endl;
+    }
 
   //year
   cout << "What is the year?" << endl;
@@ -114,13 +134,26 @@ void add(vector<parent*> *media_vector)
       cout << "What is the name of the director?" << endl;
       char director[81];
       cin.get(director, 81);
+      if(!cin)
+	{
+	  cin.clear();
+	}
       cin.get();
 
-      //duration
-      cout << "How long is the movie in minutes?" << endl;
       int duration;
-      cin >> duration;
-      cin.get(); 
+      //duration
+      while(true)
+	{
+	  cout << "How long is the movie in minutes?" << endl;
+	  cin >> duration;
+	  cin.get();
+
+	  if(isdigit(duration))
+	    {
+	      break;
+	    }
+	  cout << "Please input a number." << endl;
+	}
 
       //rating
       cout << "What is the rating?" << endl;
