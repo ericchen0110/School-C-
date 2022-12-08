@@ -1,0 +1,11 @@
+#include <iostream>
+
+room::room()
+{
+  
+}
+
+int[] room::get_items()
+{
+  return items;
+}
