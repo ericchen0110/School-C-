@@ -16,6 +16,8 @@ class room{
   virtual char* get_description();
   
  private:
+  char* name = new char[100];
+  char* description = new char[1000];
   vector<char*> items;
   map<char*, char*> game_map;
 };

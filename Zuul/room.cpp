@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <iterator>
 
 #ifndef ROOM_H
 #define ROOM_H
@@ -11,18 +12,23 @@ using namespace std;
 
 room::room(char* name, char* description)
 {
-  name = new char[100];
-  description = new char[1000];
+  strcpy(this->name, name);
+  strcpy(this->description, description);
 }
 
-char** room::get_items()
+vector<char*> room::get_items()
 {
-  return &items;
+  return items;
 }
 
 char* room::get_name()
 {
   return name;
+}
+
+char* room::get_description()
+{
+  return description;
 }
 
 map<char*, char*> room::get_map()
