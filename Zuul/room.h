@@ -1,22 +1,21 @@
 #include <iostream>
+#include <vector>
+#include <map>
 
 using namespace std;
 
 class room{
  public:
-  room(char* name);
-  virtual char** get_items();
+  room(char* name, char* description);
+  ~room();
+  virtual map<char*, char*> get_map();
+  virtual bool delete_item(char* name);
+  virtual void add_item(char* name);
+  virtual vector<char*> get_items();
   virtual char* get_name();
-  virtual room* get_north();
-  virtual room* get_south();
-  virtual room* get_west();
-  virtual room* get_east();
+  virtual char* get_description();
   
- protected:
-  char items = new char[][];
-  char* name = new char[81];
-  room *north;
-  room *south;
-  room *west;
-  room *east;
+ private:
+  vector<char*> items;
+  map<char*, char*> game_map;
 };
