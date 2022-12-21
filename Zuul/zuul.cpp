@@ -130,8 +130,7 @@ int main()
   char *k10 = new char[100];
   strcpy(k10, "secret chamber key");
   r12->add_item(k10);
-  r13->add_item(k10);
-
+  
   //key to room 12
   char *k12 = new char[100];
   strcpy(k12, "strong box key");
