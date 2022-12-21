@@ -1,3 +1,7 @@
+//Written by: Eric Chen
+//Date: 12/20/2022
+//This is zuul, a text based adventure game
+
 #include <iostream>
 #include <cstring>
 #include <vector>
@@ -76,7 +80,7 @@ int main()
   strcpy(r10->get_name(), "Secret chamber");
   strcpy(r10->get_description(), "The key to the exit is here! You can get out!");
   r10->set_locked(true);
-  strcpy(r9->get_key(), "secret chamber key");
+  strcpy(r10->get_key(), "secret chamber key");
 
   room *r11 = new room();
   strcpy(r11->get_name(), "Lab");
@@ -126,6 +130,7 @@ int main()
   char *k10 = new char[100];
   strcpy(k10, "secret chamber key");
   r12->add_item(k10);
+  r13->add_item(k10);
 
   //key to room 12
   char *k12 = new char[100];
@@ -170,45 +175,97 @@ int main()
   r5->set_exits('n', r2->get_name());
   r5->set_exits('e', r8->get_name());
 
-  r1->set_east(true);
-  r1->set_north(true);
-  r1->set_west(true);
-  r1->set_south(true);
+  r6->set_east(false);
+  r6->set_north(true);
+  r6->set_west(false);
+  r6->set_south(false);
   r6->set_exits('n', r3->get_name());
 
+  r7->set_east(true);
+  r7->set_north(true);
+  r7->set_west(true);
+  r7->set_south(false);
   r7->set_exits('w', r2->get_name());
   r7->set_exits('e', r11->get_name());
   r7->set_exits('n', r9->get_name());
 
+  r8->set_east(false);
+  r8->set_north(false);
+  r8->set_west(true);
+  r8->set_south(false);
   r8->set_exits('w', r5->get_name());
 
+  r9->set_east(false);
+  r9->set_north(false);
+  r9->set_west(false);
+  r9->set_south(true);
   r9->set_exits('s', r7->get_name());
 
+  r10->set_east(false);
+  r10->set_north(false);
+  r10->set_west(false);
+  r10->set_south(true);
   r10->set_exits('s', r14->get_name());
 
+  r11->set_east(false);
+  r11->set_north(true);
+  r11->set_west(true);
+  r11->set_south(false);
   r11->set_exits('w', r7->get_name());
   r11->set_exits('n', r12->get_name());
 
+  r12->set_east(false);
+  r12->set_north(false);
+  r12->set_west(false);
+  r12->set_south(true);
   r12->set_exits('s', r11->get_name());
 
+  r13->set_east(false);
+  r13->set_north(true);
+  r13->set_west(false);
+  r13->set_south(false);
   r13->set_exits('n', r14->get_name());
 
+  r14->set_east(true);
+  r14->set_north(true);
+  r14->set_west(true);
+  r14->set_south(true);
   r14->set_exits('w', r15->get_name());
   r14->set_exits('n', r10->get_name());
   r14->set_exits('e', r1->get_name());
   r14->set_exits('s', r13->get_name());
 
+  r15->set_east(true);
+  r15->set_north(false);
+  r15->set_west(false);
+  r15->set_south(false);
   r15->set_exits('e', r14->get_name());
 
+  //add all these rooms to a map
+  map<char*, room*> room_map;
+  room_map[r1->get_name()] = r1;
+  room_map[r2->get_name()] = r2;
+  room_map[r3->get_name()] = r3;
+  room_map[r4->get_name()] = r4;
+  room_map[r5->get_name()] = r5;
+  room_map[r6->get_name()] = r6;
+  room_map[r7->get_name()] = r7;
+  room_map[r8->get_name()] = r8;
+  room_map[r9->get_name()] = r9;
+  room_map[r10->get_name()] = r10;
+  room_map[r11->get_name()] = r11;
+  room_map[r12->get_name()] = r12;
+  room_map[r13->get_name()] = r13;
+  room_map[r14->get_name()] = r14;
+  room_map[r15->get_name()] = r15;
 
-  //cout << r13->get_items()[0] << endl;
   
   //print intro to the game
   cout << "Welcome to Zuul! This is a text based adventure game." << endl;
 
   //set initial starting room
   player* myPlayer = new player();
-  myPlayer->currentRoom = r13;
+  myPlayer->currentRoom = r1;
 
   while(true)
     {
@@ -216,15 +273,24 @@ int main()
       cout << "_____________________________________________________________________" << endl;
       cout << "You are currently in the " << (myPlayer->currentRoom)->get_name() << endl;
       cout << (myPlayer->currentRoom)->get_description() << endl;
+
+      //check if game over
+      if(strcmp((myPlayer->currentRoom->get_name()), "Exit") == 0)
+	{
+	  cout << "game over" << endl;
+	  break;
+	}
+    
+      
       if((myPlayer->currentRoom->get_items()).size() == 0)
 	{
 	  cout << "There are no items in this room" << endl;
 	}
       else
 	{
+	  cout << "There are following items in the room: ";
 	  for(int i=0; i< myPlayer->currentRoom->get_items().size(); i++)
 	    {
-	      cout << "There are following items in the room: ";
 	      cout << myPlayer->currentRoom->get_items()[i] << "     ";
 	    }
 	  cout << endl;
@@ -232,9 +298,27 @@ int main()
 
       //print out exits
       cout << "This room has the follwing exits:" << endl;
-      //cout << myPlayer->currentRoom->get_exits()[0].first << endl;
+      if(myPlayer->currentRoom->get_north())
+	{
+	  cout << "North: " << myPlayer->currentRoom->get_exits()['n'] << endl;
+	}
+
+      if(myPlayer->currentRoom->get_south())
+        {
+          cout << "South: " << myPlayer->currentRoom->get_exits()['s'] << endl;
+        }
+
+      if(myPlayer->currentRoom->get_east())
+        {
+          cout << "East: " << myPlayer->currentRoom->get_exits()['e'] << endl;
+        }
+
+      if(myPlayer->currentRoom->get_west())
+        {
+          cout << "West: " << myPlayer->currentRoom->get_exits()['w'] << endl;
+        }
       
-      cout << "What do you want to do?(INVENTORY, PICK, DROP, MOVE, QUIT)" << endl;
+      cout << "\nWhat do you want to do?(INVENTORY, PICK, DROP, MOVE, QUIT)" << endl;
 
       char input[100];
       cin.get(input, 100);
@@ -261,7 +345,7 @@ int main()
 	{
 	  //pick stuff into inventory
 	  cout << "Which item do you want to pick up?" << endl;
-	  char input1[100];
+	  char *input1 = new char[100];
 	  cin.get(input1, 100);
 	  cin.get();
 	  bool exist = false;
@@ -285,7 +369,7 @@ int main()
 	{
 	  //Drop items from inventory to the room
 	  cout << "Which item do you want to drop in the room?" << endl;
-	  char input2[100];
+	  char* input2 = new char[100];
 	  cin.get(input2, 100);
 	  cin.get();
 	  bool exist = false;
@@ -314,7 +398,164 @@ int main()
       else if(strcmp(input, "MOVE") == 0)
 	{
 	  //move to another room
-	  
+	  cout << "Enter the direciton of the room you want to go to.(north, south, west, east)" << endl;
+	  char* input3 = new char[100];
+	  cin.get(input3, 100);
+	  cin.get();
+
+	  //check north
+	  if(strcmp(input3, "north") == 0)
+	    {
+	      if(myPlayer->currentRoom->get_north())
+		{
+		  char* room_name = myPlayer->currentRoom->get_exits()['n'];
+		  room *next_room = room_map[room_name];
+		  //check if the room is locked
+		  if(next_room->get_locked())
+		    {
+		      bool have_key = false;
+		      vector<char*>::iterator inventory_I;
+		      for(inventory_I = myPlayer->inventory.begin(); inventory_I < myPlayer->inventory.end(); inventory_I++)
+			{
+			  if(strcmp((*inventory_I), next_room->get_key()) == 0)
+			    {
+			      have_key = true;
+			    }
+			}
+		      if(!have_key)
+			{
+			  cout << "\nThis room is locked. Go to other rooms to find the key to this room." << endl;
+			}
+		      else
+			{
+			  myPlayer->currentRoom = next_room;
+			}
+		    }
+		  else
+		    {
+		      myPlayer->currentRoom = next_room;
+		    }
+		  }
+	      else
+		{
+		  cout << "The exit you typed does not exist" << endl;
+		}
+	    }
+	  //check south
+	  else if(strcmp(input3, "south") == 0)
+            {
+              if(myPlayer->currentRoom->get_south())
+                {
+                  char* room_name = myPlayer->currentRoom->get_exits()['s'];
+                  room *next_room = room_map[room_name];
+                  //check if the room is locked
+                  if(next_room->get_locked())
+                    {
+                      bool have_key = false;
+                      vector<char*>::iterator inventory_I;
+                      for(inventory_I = myPlayer->inventory.begin(); inventory_I < myPlayer->inventory.end(); inventory_I++)
+                        {
+                          if(strcmp((*inventory_I), next_room->get_key()) == 0)
+                            {
+                              have_key = true;
+                            }
+                        }
+                      if(!have_key)
+                        {
+                          cout << "\nThis room is locked. Go to other rooms to find the key to this room." << endl;
+                        }
+                      else
+                        {
+                          myPlayer->currentRoom = next_room;
+                        }
+                    }
+                  else
+                    {
+                      myPlayer->currentRoom = next_room;
+                    }
+                  }
+              else
+                {
+                  cout << "The exit you typed does not exist" << endl;
+                }
+            }
+	  //check west
+	  else if((strcmp(input3, "west") == 0))
+            {
+              if(myPlayer->currentRoom->get_west())
+                {
+                  char* room_name = myPlayer->currentRoom->get_exits()['w'];
+                  room *next_room = room_map[room_name];
+                  //check if the room is locked
+                  if(next_room->get_locked())
+                    {
+                      bool have_key = false;
+                      vector<char*>::iterator inventory_I;
+                      for(inventory_I = myPlayer->inventory.begin(); inventory_I < myPlayer->inventory.end(); inventory_I++)
+                        {
+                          if(strcmp((*inventory_I), next_room->get_key()) == 0)
+                            {
+                              have_key = true;
+                            }
+                        }
+                      if(!have_key)
+                        {
+                          cout << "\nThis room is locked. Go to other rooms to find the key to this room." << endl;
+                        }
+                      else
+                        {
+                          myPlayer->currentRoom = next_room;
+                        }
+                    }
+                  else
+                    {
+                      myPlayer->currentRoom = next_room;
+                    }
+                  }
+              else
+                {
+                  cout << "The exit you typed does not exist" << endl;
+                }
+            }
+	    //check east
+	  else if((strcmp(input3, "east") == 0))
+            {
+              if(myPlayer->currentRoom->get_east())
+                {
+                  char* room_name = myPlayer->currentRoom->get_exits()['e'];
+                  room *next_room = room_map[room_name];
+                  //check if the room is locked
+                  if(next_room->get_locked())
+                    {
+                      bool have_key = false;
+                      vector<char*>::iterator inventory_I;
+                      for(inventory_I = myPlayer->inventory.begin(); inventory_I < myPlayer->inventory.end(); inventory_I++)
+                        {
+                          if(strcmp((*inventory_I), next_room->get_key()) == 0)
+                            {
+                              have_key = true;
+                            }
+                        }
+                      if(!have_key)
+                        {
+                          cout << "\nThis room is locked. Go to other rooms to find the key to this room." << endl;
+                        }
+                      else
+                        {
+                          myPlayer->currentRoom = next_room;
+                        }
+                    }
+                  else
+                    {
+                      myPlayer->currentRoom = next_room;
+                    }
+                  }
+              else
+                {
+                  cout << "The exit you typed does not exist" << endl;
+                }
+            }
+
 	}
       else if(strcmp(input, "QUIT") == 0)
 	{
