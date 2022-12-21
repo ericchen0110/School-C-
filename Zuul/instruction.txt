@@ -1,0 +1,6 @@
+1. pick up "bedroom key" from storage room
+2. go to bedroom and pick up "basement key" from the closet
+3. pick up "strong box key" from the drawer
+4. pick up "secret chamber key" from the strong box
+5. pick up "exit key" from the secret chamber
+6. game over
