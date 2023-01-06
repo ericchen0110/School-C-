@@ -1,0 +1,15 @@
+#include <iostream>
+
+using namespace std;
+
+class Student{
+ public:
+  Student(char* first_name, char* last_name, int id, float gpa);
+  ~Student();
+
+ private:
+  char *first_name = new char[100];
+  char *last_name = new char[100];
+  int id;
+  float gpa;
+};
