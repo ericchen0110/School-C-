@@ -1,3 +1,7 @@
+//written by Eric Chen
+//Date: 1/6/2023
+//This is the cpp file of the Student class
+
 #include <iostream>
 #include <cstring>
 
