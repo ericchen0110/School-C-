@@ -5,13 +5,16 @@
 
 using namespace std;
 
-void ADD();
-void PRINT();
-void DELETE();
-void AVERAGE();
+void ADD(Node* head);
+void PRINT(Node* head);
+void DELETE(Node* head);
+void AVERAGE(Node* head);
+Node* LOOP(Node* head);
 
 int main()
 {
+  //make a header pointer
+  Node *head;
   while(true)
     {
       cout << "___________________________________________________________________" << endl;
@@ -23,7 +26,7 @@ int main()
       if(strcmp(input, "ADD") == 0)
 	{
 	  //add
-	  ADD();
+	  ADD(head);
 	}
       else if(strcmp(input, "PRINT") == 0)
 	{
@@ -39,9 +42,10 @@ int main()
 	  break;
 	}
     }
+  return 0;
 }
 
-void ADD()
+void ADD(Node* head)
 {
   //input
   char first_name[100];
@@ -63,4 +67,20 @@ void ADD()
 
   //make a new node
   Node *new_node = new Node(new_student);
+  Node *final;
+  final = LOOP(head);
+  //final->setNext(new_node);
+}
+
+Node* LOOP(Node* head)
+{
+  if(head->getNext() == NULL)
+    {
+      return head;
+    }
+  else
+    {
+      LOOP(head->getNext());
+    }
+  return NULL;
 }
