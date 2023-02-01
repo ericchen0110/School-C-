@@ -1,25 +1,38 @@
-#include "node.h"
+#include <iostream>
+#include <cstring>
+#include "student.h"
+#include "Node.h"
 
-Node::Node() {
+using namespace std;
+
+Node::Node(Student* myStudent)
+{
+  //make a new student using the Student pointer provided
+  this->myStudent = new Student(myStudent->get_first_name(), myStudent->get_last_name(), myStudent->get_id(), myStudent->get_gpa());
+
+  //set the next pointer to NULL for now
+  myNode = NULL;
 }
 
-Node::Node(Student* newstudent) {
-  student = newstudent;
+Node::~Node()
+{
+  
 }
 
-Node* Node::getNext() {
-  return next;
+Node* Node::getNext()
+{
+  //return a pointer to the next node
+  return myNode;
 }
 
-Student* Node::getStudent() {
-  return student;
+Student* Node::getStudent()
+{
+  //return a pointer of the student stored
+  return myStudent;
 }
 
-void Node::setNext(Node* newnext) {
-  next = newnext;
-}
-
-Node::~Node() {
-  student = NULL;
-  next = NULL;
+void Node::setNext(Node* myNode)
+{
+  //setting the next node pointer to the myNode pointer
+  this->myNode = myNode;
 }
