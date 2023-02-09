@@ -8,16 +8,25 @@
 
 using namespace std;
 
-int hashFun(int id);
+int hashFun(int id, int slots);
 int getDigit(int num, int length, int digit);
-void ADD(Node** hash_table);
-void random_student(int count);
+int ADD(Node** hash_table, int slots, Student* new_student);
+int random_student(int count, Node** hash_table, int slots);
+int newHash(int slots, Node** hash_table);
+void printHash(Node** hash_table, int slots);
+bool printRecur(Node* header, int id);
 
 int main()
 {
   Node** hash_table = new Node*[100];
+  int slots = 100;
+  for(int i=0; i<100; i++)
+    {
+      hash_table[i] = NULL;
+      }
   while(true)
     {
+      cout << "______________________________________________________" << endl;
       //get input
       char input[100];
       cout << "What do you want to do? (ADD, PRINT, DELETE or QUIT)\nIf you want to generate students, type GENERATE" << endl;
@@ -26,11 +35,30 @@ int main()
       if(strcmp(input, "ADD") == 0)
 	{
 	  //add
-	  ADD(hash_table);
+	  //get input
+	  char fName[100];
+	  char lName[100];
+	  int id;
+	  float gpa;
+
+	  cout << "First Name: ";
+	  cin >> fName;
+	  cout << "Last Name: ";
+	  cin >> lName;
+	  cout << "ID: ";
+	  cin >> id;
+	  cout << "GPA: ";
+	  cin >> gpa;
+
+	  //make the student
+	  Student* new_student = new Student(fName, lName, id, gpa);
+
+	  slots = ADD(hash_table, slots, new_student);
 	}
       else if(strcmp(input, "PRINT") == 0)
 	{
 	  //print
+	  printHash(hash_table, slots);
 	}
       else if(strcmp(input, "DELETE") == 0)
 	{
@@ -42,7 +70,7 @@ int main()
 	  int count = 0;
 	  cout << "How many students would you like to generate and add?" << endl;
 	  cin >> count;
-	  random_student(count);
+	  slots = random_student(count, hash_table, slots);
 	}
       else if(strcmp(input, "QUIT") == 0)
 	{
@@ -54,8 +82,49 @@ int main()
   return 0;
 }
 
-void random_student(int count)
+void printHash(Node** hash_table, int slots)
 {
+  //ask for the student's ID
+  cout << "Student ID: ";
+  int id;
+  cin >> id;
+
+  //get the hash vlaue
+  int hash_value = hashFun(id, slots);
+  
+  //print
+  cout << endl;
+  if(!printRecur(hash_table[hash_value], id))
+    {
+      cout << "Student not found" << endl;
+    }
+}
+
+bool printRecur(Node* header, int id)
+{
+  //check if header is null
+  if(header == NULL)
+    {
+      return false;
+    }
+
+  //check if the header contains the student
+  if(header->getStudent()->get_id() == id)
+    {
+      cout << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
+      return true;
+    }
+  else
+    {
+      printRecur(header->getNext(), id);
+    }
+  return false;
+}
+
+int random_student(int count, Node** hash_table, int slots)
+{
+  int new_slots = slots;
+  cout << endl;
   for(int i=0; i<count; i++)
     {
       //grab first name
@@ -91,11 +160,16 @@ void random_student(int count)
       Student* new_student = new Student(fName, lName, id, gpa);
 
       //add to the hash table
-      
+      new_slots = ADD(hash_table, slots, new_student);
+
+      //print out the student added
+      cout << "Student added: " << fName << " " << lName << ", " << gpa << ", " << id << endl;
     }
+
+  return new_slots;
 }
 
-int hashFun(int id)
+int hashFun(int id, int slots)
 {
   //take the first, third, and fifth digit of the student's ID and make a three digit number. Then take the reminder of deviding the number by 100 as the hash  number
 
@@ -105,7 +179,7 @@ int hashFun(int id)
   
   int output = firstD*100 + thirdD*10 + fifthD;
 
-  return output%100;
+  return output%slots;
 }
 
 int getDigit(int num, int length, int digit)
@@ -129,34 +203,49 @@ int getDigit(int num, int length, int digit)
   return -1;
 }
 
-void ADD(Node** hash_table)
+int ADD(Node** hash_table, int slots, Student* new_student)
 {
-  //get input
-  char fName[100];
-  char lName[100];
-  int id;
-  float gpa;
-
-  cout << "First Name: ";
-  cin >> fName;
-  cout << "Last Name: ";
-  cin >> lName;
-  cout << "ID: ";
-  cin >> id;
-  cout << "GPA: ";
-  cin >> gpa;
-
-
   //hash the id
-  int hash_value = hashFun(id);
-
-  //make the student
-  Student* new_student = new Student(fName, lName, id, gpa);
-
+  int hash_value = hashFun(new_student->get_id(), slots);
+  
   //add to a node
   Node* new_node = new Node(new_student);
 
-  cout << "value: " << hash_value << endl;
   //add to the hash_table array
-  hash_table[hash_value]->setNext(NULL);
+  if(hash_table[hash_value] == NULL)
+    {
+      hash_table[hash_value] = new_node;
+    }
+  else if(hash_table[hash_value]->getNext() == NULL)
+    {
+      hash_table[hash_value]->setNext(new_node);
+    }
+  else if(hash_table[hash_value]->getNext()->getNext() == NULL)
+    {
+      hash_table[hash_value]->getNext()->setNext(new_node);
+    }
+  else
+    {
+      //more than three values in the linked list
+      return newHash(2*slots, hash_table);
+    }
+  
+  return slots;
+}
+
+int newHash(int slots, Node** hash_table)
+{
+  //make a new hash tablle
+  Node** new_table = new Node*[slots];
+
+  //copy old table into new table
+  for(int i=0; i< (slots/2); i++)
+    {
+      new_table[i] = hash_table[i];
+    }
+
+  //relocate hash_table
+  hash_table = new_table;
+
+  return slots;
 }
