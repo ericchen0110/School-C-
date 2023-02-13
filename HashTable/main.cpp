@@ -15,6 +15,8 @@ int random_student(int count, Node** hash_table, int slots);
 int newHash(int slots, Node** hash_table);
 void printHash(Node** hash_table, int slots);
 bool printRecur(Node* header, int id);
+void deleteFun(Node** hash_table, int slots);
+bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id);
 
 int main()
 {
@@ -63,6 +65,7 @@ int main()
       else if(strcmp(input, "DELETE") == 0)
 	{
 	  //delete
+	  deleteFun(hash_table, slots);
 	}
       else if(strcmp(input, "GENERATE") == 0)
 	{
@@ -80,6 +83,67 @@ int main()
     }
   
   return 0;
+}
+
+void deleteFun(Node** hash_table, int slots)
+{
+  cout << "ID of the student that you want to delete: ";
+  int id;
+  cin >> id;
+
+  //get the hash value
+  int hash_value = hashFun(id, slots);
+
+  if(deleteRecur(hash_table, hash_value, hash_table[hash_value], id))
+    {
+      cout << "Student deleted" << endl;
+    }
+  else
+    {
+      cout << "Student not found." << endl;
+    }
+}
+
+bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id)
+{
+  //checkm if header is NULL
+  if(header == NULL)
+    {
+      return false;
+    }
+
+  //check if the header contains the student
+  if(header->getStudent()->get_id() == id)
+    {
+      cout << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
+      cout << "\nIs this the student you want to delete? (Yes or No)" << endl;
+      char input[100];
+      cin >> input;
+      if(strcmp(input, "Yes") == 0)
+	{
+	  //if the only one in the list
+	  if(header == hash_table[hash_value] && header->getNext() == NULL)
+	    {
+	      delete header;
+	      hash_table[hash_value] = NULL;
+	    }
+	  //if the end of the list
+	  else if(header->getNext() == NULL)
+	    {
+	      
+	    }
+	}
+      else
+	{
+	  return false;
+	}
+    }
+  else
+    {
+      deleteRecur(header->getNext(), id);
+    }
+  
+  return false;
 }
 
 void printHash(Node** hash_table, int slots)
