@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include <math.h>
+#include <cmath>
 #include <bits/stdc++.h>
 #include <fstream>
 #include "student.h"
@@ -16,7 +17,7 @@ int newHash(int slots, Node** hash_table);
 void printHash(Node** hash_table, int slots);
 bool printRecur(Node* header, int id);
 void deleteFun(Node** hash_table, int slots);
-bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id);
+bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id, bool deleted);
 
 int main()
 {
@@ -94,7 +95,7 @@ void deleteFun(Node** hash_table, int slots)
   //get the hash value
   int hash_value = hashFun(id, slots);
 
-  if(deleteRecur(hash_table, hash_value, hash_table[hash_value], id))
+  if(deleteRecur(hash_table, hash_value, hash_table[hash_value], id, false))
     {
       cout << "Student deleted" << endl;
     }
@@ -104,46 +105,73 @@ void deleteFun(Node** hash_table, int slots)
     }
 }
 
-bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id)
+bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id, bool deleted)
 {
   //checkm if header is NULL
   if(header == NULL)
     {
-      return false;
+      deleted = false;
+      return deleted;
     }
 
   //check if the header contains the student
   if(header->getStudent()->get_id() == id)
     {
-      cout << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
+      cout << endl << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << fixed << setprecision(2) << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
       cout << "\nIs this the student you want to delete? (Yes or No)" << endl;
       char input[100];
       cin >> input;
       if(strcmp(input, "Yes") == 0)
 	{
-	  //if the only one in the list
+	  //the only one in the list
 	  if(header == hash_table[hash_value] && header->getNext() == NULL)
 	    {
 	      delete header;
 	      hash_table[hash_value] = NULL;
 	    }
-	  //if the end of the list
-	  else if(header->getNext() == NULL)
-	    {
-	      
-	    }
+	  deleted = true;
+	  return deleted;
 	}
       else
 	{
-	  return false;
+	  deleted = false;
+	  return deleted;
 	}
+    }
+  //check if next contains the student
+  else if(header->getNext()->getStudent()->get_id() == id)
+    {
+      //print the student
+      cout << endl << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << fixed << setprecision(2) << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
+      cout << "\nIs this the student you want to delete? (Yes or No)" << endl;
+      char input[100];
+      cin >> input;
+      if(strcmp(input, "Yes") == 0)
+        {
+          //end of the list
+          if(header->getNext()->getNext() == NULL)
+            {
+              delete header->getNext();
+              header->setNext(NULL);
+            }
+	  else
+	    {
+	      Node *temp = NULL;
+	      temp = (header->getNext()->getNext());
+	      delete header->getNext();
+	      header->setNext(temp);
+	      delete temp;
+	    }
+	  deleted = true;
+        }
+
     }
   else
     {
-      deleteRecur(header->getNext(), id);
+      deleted = deleteRecur(hash_table, hash_value, header->getNext(), id, deleted);
     }
   
-  return false;
+  return deleted;
 }
 
 void printHash(Node** hash_table, int slots)
@@ -175,7 +203,7 @@ bool printRecur(Node* header, int id)
   //check if the header contains the student
   if(header->getStudent()->get_id() == id)
     {
-      cout << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
+      cout << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << fixed << setprecision(2) << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
       return true;
     }
   else
@@ -227,7 +255,7 @@ int random_student(int count, Node** hash_table, int slots)
       new_slots = ADD(hash_table, slots, new_student);
 
       //print out the student added
-      cout << "Student added: " << fName << " " << lName << ", " << gpa << ", " << id << endl;
+      cout << "Student added: " << fName << " " << lName << ", " << fixed << setprecision(2) << gpa << ", " << id << endl;
     }
 
   return new_slots;
