@@ -15,9 +15,11 @@ int ADD(Node** hash_table, int slots, Student* new_student);
 int random_student(int count, Node** hash_table, int slots);
 int newHash(int slots, Node** hash_table);
 void printHash(Node** hash_table, int slots);
-bool printRecur(Node* header, int id);
+bool printRecur(Node* header, int id, bool exist);
 void deleteFun(Node** hash_table, int slots);
 bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id, bool deleted);
+void print(Node** hash_table, int slots);
+void printRecur(Node* header);
 
 int main()
 {
@@ -32,7 +34,7 @@ int main()
       cout << "______________________________________________________" << endl;
       //get input
       char input[100];
-      cout << "What do you want to do? (ADD, PRINT, DELETE or QUIT)\nIf you want to generate students, type GENERATE" << endl;
+      cout << "What do you want to do? (ADD, PRINT, SEARCH, DELETE or QUIT)\nIf you want to generate students, type GENERATE" << endl;
       cin >> input;
 
       if(strcmp(input, "ADD") == 0)
@@ -61,6 +63,11 @@ int main()
       else if(strcmp(input, "PRINT") == 0)
 	{
 	  //print
+	  print(hash_table, slots);
+	}
+      else if(strcmp(input, "SEARCH") == 0)
+	{
+	  //search
 	  printHash(hash_table, slots);
 	}
       else if(strcmp(input, "DELETE") == 0)
@@ -84,6 +91,30 @@ int main()
     }
   
   return 0;
+}
+
+void print(Node** hash_table, int slots)
+{
+  for(int i=0; i<slots; i++)
+    {
+      printRecur(hash_table[i]);
+    }
+}
+
+void printRecur(Node* header)
+{
+  //check if the header is NULL
+  if(header == NULL)
+    {
+      return;
+    }
+  else
+    {
+      //print out the student
+      Student *newS = header->getStudent();
+      cout << newS->get_first_name() << " " << newS->get_last_name() << ", " << newS->get_id() << ", " << fixed << setprecision(2) << newS->get_gpa() << endl;
+      printRecur(header->getNext());
+    }
 }
 
 void deleteFun(Node** hash_table, int slots)
@@ -186,31 +217,31 @@ void printHash(Node** hash_table, int slots)
   
   //print
   cout << endl;
-  if(!printRecur(hash_table[hash_value], id))
+  if(!printRecur(hash_table[hash_value], id, false))
     {
       cout << "Student not found" << endl;
     }
 }
 
-bool printRecur(Node* header, int id)
+bool printRecur(Node* header, int id, bool exist)
 {
   //check if header is null
   if(header == NULL)
     {
-      return false;
+      exist =  false;
     }
 
   //check if the header contains the student
   if(header->getStudent()->get_id() == id)
     {
       cout << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << fixed << setprecision(2) << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
-      return true;
+      exist = true;
     }
   else
     {
-      printRecur(header->getNext(), id);
+      exist = printRecur(header->getNext(), id, exist);
     }
-  return false;
+  return exist;
 }
 
 int random_student(int count, Node** hash_table, int slots)
@@ -223,7 +254,7 @@ int random_student(int count, Node** hash_table, int slots)
       ifstream firstName ("firstName.txt");
       char fName[100];
       char temp[100];
-      for(int j=0; j<(rand()%20); j++)
+      for(int j=0; j<(rand()%100); j++)
 	{
 	  firstName >> temp;
 	}
@@ -232,7 +263,7 @@ int random_student(int count, Node** hash_table, int slots)
       //grab last name
       ifstream lastName("lastName.txt");
       char lName[100];
-      for(int j=0; j<(rand()%20); j++)
+      for(int j=0; j<(rand()%50); j++)
 	{
 	  lastName >> temp;
 	}
@@ -254,6 +285,9 @@ int random_student(int count, Node** hash_table, int slots)
       //add to the hash table
       new_slots = ADD(hash_table, slots, new_student);
 
+      //test
+      
+      
       //print out the student added
       cout << "Student added: " << fName << " " << lName << ", " << fixed << setprecision(2) << gpa << ", " << id << endl;
     }
@@ -333,7 +367,12 @@ int newHash(int slots, Node** hash_table)
   //copy old table into new table
   for(int i=0; i< (slots/2); i++)
     {
-      new_table[i] = hash_table[i];
+      //get new and old hash values
+      int old_hash_value = hashFun(hash_table[i]->getStudent()->get_id(), slots/2);
+      int new_hash_value = hashFun(hash_table[i]->getStudent()->get_id(), slots);
+
+      //move from old to new table
+      new_table[new_hash_value] = hash_table[old_hash_value];
     }
 
   //relocate hash_table
