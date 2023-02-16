@@ -13,7 +13,8 @@ int hashFun(int id, int slots);
 int getDigit(int num, int length, int digit);
 int ADD(Node** hash_table, int slots, Student* new_student);
 int random_student(int count, Node** hash_table, int slots);
-int newHash(int slots, Node** hash_table);
+int newHash(int slots, Node** hash_table, Student* new_student);
+void rehash(Node** new_table, Node* old_head, int new_slots);
 void printHash(Node** hash_table, int slots);
 bool printRecur(Node* header, int id, bool exist);
 void deleteFun(Node** hash_table, int slots);
@@ -286,7 +287,7 @@ int random_student(int count, Node** hash_table, int slots)
       new_slots = ADD(hash_table, slots, new_student);
 
       //test
-      
+      cout << "hash value" << hashFun(id, slots) << endl;
       
       //print out the student added
       cout << "Student added: " << fName << " " << lName << ", " << fixed << setprecision(2) << gpa << ", " << id << endl;
@@ -297,13 +298,13 @@ int random_student(int count, Node** hash_table, int slots)
 
 int hashFun(int id, int slots)
 {
-  //take the first, third, and fifth digit of the student's ID and make a three digit number. Then take the reminder of deviding the number by 100 as the hash  number
+  //take the second, forth, and sixth digit of the student's ID and make a three digit number. Then take the reminder of deviding the number by 100 as the hash  number
 
-  int firstD = getDigit(id, 6, 1);
-  int thirdD = getDigit(id, 6, 3);
-  int fifthD = getDigit(id, 6, 5);
+  int secondD = getDigit(id, 6, 2);
+  int forthD = getDigit(id, 6, 4);
+  int sixthD = getDigit(id, 6, 6);
   
-  int output = firstD*100 + thirdD*10 + fifthD;
+  int output = secondD*100 + forthD*10 + sixthD;
 
   return output%slots;
 }
@@ -352,31 +353,52 @@ int ADD(Node** hash_table, int slots, Student* new_student)
     }
   else
     {
+      cout << "hash value: " << hash_value << endl;
       //more than three values in the linked list
-      return newHash(2*slots, hash_table);
+      return newHash(2*slots, hash_table, new_student);
     }
   
   return slots;
 }
 
-int newHash(int slots, Node** hash_table)
+int newHash(int slots, Node** hash_table, Student* new_student)
 {
   //make a new hash tablle
   Node** new_table = new Node*[slots];
+  for(int i=0; i<slots; i++)
+    {
+      new_table[i] == NULL;
+    }
 
+  //add the new node into the new table
+  cout << "working1\n";
+  ADD(new_table, slots, new_student);
+
+  cout << "working2\n";
   //copy old table into new table
   for(int i=0; i< (slots/2); i++)
     {
-      //get new and old hash values
-      int old_hash_value = hashFun(hash_table[i]->getStudent()->get_id(), slots/2);
-      int new_hash_value = hashFun(hash_table[i]->getStudent()->get_id(), slots);
-
-      //move from old to new table
-      new_table[new_hash_value] = hash_table[old_hash_value];
+      rehash(new_table, hash_table[i], slots);
     }
 
+  cout << "working3\n";
   //relocate hash_table
   hash_table = new_table;
 
   return slots;
+}
+
+void rehash(Node** new_table, Node* old_head, int new_slots)
+{
+  //check if NULL
+  if(old_head == NULL)
+    {
+      return;
+    }
+  else
+    {
+      ADD(new_table, new_slots, old_head->getStudent());
+      rehash(new_table, old_head->getNext(), new_slots);
+    }
+  return;
 }
