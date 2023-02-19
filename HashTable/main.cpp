@@ -1,3 +1,8 @@
+/*Written by Eric Chen
+  Date: 2/18/2023
+  This is the main file of the hash table project
+*/
+
 #include <iostream>
 #include <cstring>
 #include <math.h>
@@ -12,13 +17,13 @@ using namespace std;
 int hashFun(int id, int slots);
 int getDigit(int num, int length, int digit);
 int ADD(Node** &hash_table, int slots, Student* new_student);
-int random_student(int count, Node** hash_table, int slots);
-int newHash(int slots, Node** &hash_table, Student* new_student);
+int random_student(int count, Node** &hash_table, int slots);
+Node** newHash(int slots, Node** &hash_table, Student* new_student);
 void rehash(Node** &new_table, Node* old_head, int new_slots);
 void printHash(Node** hash_table, int slots);
 bool printRecur(Node* header, int id, bool exist);
-void deleteFun(Node** hash_table, int slots);
-bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id, bool deleted);
+void deleteFun(Node** &hash_table, int slots);
+bool deleteRecur(Node** &hash_table, int hash_value, Node* header, int id, bool deleted);
 void print(Node** hash_table, int slots);
 void printRecur(Node* header);
 
@@ -29,7 +34,8 @@ int main()
   for(int i=0; i<100; i++)
     {
       hash_table[i] = NULL;
-      }
+    }
+  
   while(true)
     {
       cout << "______________________________________________________" << endl;
@@ -118,7 +124,7 @@ void printRecur(Node* header)
     }
 }
 
-void deleteFun(Node** hash_table, int slots)
+void deleteFun(Node** &hash_table, int slots)
 {
   cout << "ID of the student that you want to delete: ";
   int id;
@@ -137,7 +143,7 @@ void deleteFun(Node** hash_table, int slots)
     }
 }
 
-bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id, bool deleted)
+bool deleteRecur(Node** &hash_table, int hash_value, Node* header, int id, bool deleted)
 {
   //checkm if header is NULL
   if(header == NULL)
@@ -174,7 +180,8 @@ bool deleteRecur(Node** hash_table, int hash_value, Node* header, int id, bool d
   else if(header->getNext()->getStudent()->get_id() == id)
     {
       //print the student
-      cout << endl << header->getStudent()->get_first_name() << " " << header->getStudent()->get_last_name() << ", " << fixed << setprecision(2) << header->getStudent()->get_gpa() << ", " << header->getStudent()->get_id() << endl;
+      Student* newS = header->getNext()->getStudent();
+      cout << endl << newS->get_first_name() << " " << newS->get_last_name() << ", " << fixed << setprecision(2) << newS->get_gpa() << ", " << newS->get_id() << endl;
       cout << "\nIs this the student you want to delete? (Yes or No)" << endl;
       char input[100];
       cin >> input;
@@ -245,9 +252,9 @@ bool printRecur(Node* header, int id, bool exist)
   return exist;
 }
 
-int random_student(int count, Node** hash_table, int slots)
+int random_student(int count, Node** &hash_table, int slots)
 {
-  int new_slots = slots;
+  //int new_slots = slots;
   cout << endl;
   for(int i=0; i<count; i++)
     {
@@ -284,16 +291,16 @@ int random_student(int count, Node** hash_table, int slots)
       Student* new_student = new Student(fName, lName, id, gpa);
 
       //add to the hash table
-      new_slots = ADD(hash_table, slots, new_student);
+      slots = ADD(hash_table, slots, new_student);
 
       //test
-      cout << "hash value" << hashFun(id, slots) << endl;
+      //cout << "hash value" << hashFun(id, slots) << endl;
       
       //print out the student added
       cout << "Student added: " << fName << " " << lName << ", " << fixed << setprecision(2) << gpa << ", " << id << endl;
     }
 
-  return new_slots;
+  return slots;
 }
 
 int hashFun(int id, int slots)
@@ -306,6 +313,7 @@ int hashFun(int id, int slots)
   
   int output = id;
 
+  cout << "Hash function slots: " << slots << endl;
   return (output%slots);
 }
 
@@ -355,13 +363,15 @@ int ADD(Node** &hash_table, int slots, Student* new_student)
     {
       cout << "hash value: " << hash_value << endl;
       //more than three values in the linked list
-      slots = newHash(2*slots, hash_table, new_student);
+      hash_table = newHash((2*slots), hash_table, new_student);
+      cout << "test" << endl;
+      slots = 2*slots;
     }
   
   return slots;
 }
 
-int newHash(int slots, Node** &hash_table, Student* new_student)
+Node** newHash(int slots, Node** &hash_table, Student* new_student)
 {
   //make a new hash table
   Node** new_table = new Node*[slots];
@@ -382,7 +392,7 @@ int newHash(int slots, Node** &hash_table, Student* new_student)
   //relocate hash_table
   hash_table = new_table;
 
-  return slots;
+  return new_table;
 }
 
 void rehash(Node** &new_table, Node* old_head, int new_slots)
