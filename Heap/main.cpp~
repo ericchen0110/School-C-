@@ -1,0 +1,63 @@
+#include <iostream>
+#include <cstring>
+#include <fstream>
+
+using namespace std;
+
+int main()
+{
+  //get input
+  cout << "Do you want to input numbers through the console or a file? For console, type \"console\", for file, type \"file\"." << endl;
+  char input[100];
+  cin >> input;
+  int number[100];
+  for(int i=0; i<100; i++)
+    {
+      number[i] = 0;
+    }
+  
+  if(strcmp(input, "console") == 0)
+    {
+      //console
+      int count;
+      while(true)
+	{
+	  cout << "How many numbers do  you want to enter?" << endl;
+	  cin >> count;
+	  if(count > 100)
+	    {
+	      cout << "That's too many numbers. Either use the file input or put a smaller number." << endl;
+	    }
+	  else
+	    {
+	      break;
+	    }
+	}
+      cout << "Enter your numbers: ";
+      for(int i=0; i<count; i++)
+	{
+	  cin >> number[i];
+	}
+    }
+  else if(strcmp(input, "file") == 0)
+    {
+      //file
+      cout << "File name: ";
+      char name[100];
+      cin >> name;
+
+      ifstream fNum (name);
+      
+      for(int i=0; i<100; i++)
+	{
+	  if(fNum.eof())
+	    {
+	      break;
+	    }
+	  fNum >> number[i];
+	}
+    }
+
+  
+  return 0;
+}

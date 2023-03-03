@@ -1,0 +1,18 @@
+#ifndef HEAP_H
+#define HEAP_H
+#include <iostream>
+
+using namespace std;
+
+class heap {
+ public:
+  heap();
+  int* addNum(int num);
+  int* remove();
+  int* removeAll();
+  int* display();
+
+ private:
+  int* heap_arr = new int[101];
+}
+  
