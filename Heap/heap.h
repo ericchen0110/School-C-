@@ -9,13 +9,15 @@ class heap {
   heap();
   void addNum(int num);
   int remove();
-  void moveUp(int index);
+  bool moveUp(int index);
   void moveDown(int index);
 
   int parent(int index);
   int left(int index);
   int right(int index);
 
+  int* getArr();
+  
  private:
   int* heap_arr = new int[101];
 };
