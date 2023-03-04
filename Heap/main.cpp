@@ -1,3 +1,8 @@
+/*Written by Eric Chen
+  Date: 3/4/2023
+  This is the main file of the heap program
+*/
+
 #include <iostream>
 #include <cstring>
 #include <fstream>
@@ -62,15 +67,11 @@ int main()
   //make a heap
   heap *my_heap = new heap();
 
-  /*my_heap->addNum(number[0]);
-  cout << my_heap->remove() << endl;
-  */
-
   //add the numbers into a heap
   for(int i=0; i<100; i++)
     {
       my_heap->addNum(number[i]);
-     }
+    }
   
   //actions
   cout << "What do you want to do? \"REMOVE\" to output the largest value, \"ALL\" to remove and output everything from the heap, \"DISPLAY\" to see the entire heap in a visual way." << endl;
@@ -86,21 +87,21 @@ int main()
     else if(strcmp(input2, "ALL") == 0)
       {
 	//remove everthing
+	int num = -1;
 	for(int i=0; i<100; i++)
 	  {
-	    cout << my_heap->remove() << " ";
+	    num = my_heap->remove();
+	    if(num == 0)
+	      {
+		break;
+	      }
+	    cout << num << " ";
 	  }
       }
     else if(strcmp(input2, "DISPLAY") == 0)
       {
 	//display everthing
-      }
-    else if(strcmp(input2, "TEST") == 0)
-      {
-	for(int i=0; i<101; i++)
-	  {
-	    cout << (my_heap->getArr())[i] << " ";
-	  }
+	my_heap->display(1, 0);
       }
     else
       {
