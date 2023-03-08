@@ -72,9 +72,12 @@ int main()
     {
       my_heap->addNum(number[i]);
     }
-  
+
+  while(true)
+    {
   //actions
   cout << "What do you want to do? \"REMOVE\" to output the largest value, \"ALL\" to remove and output everything from the heap, \"DISPLAY\" to see the entire heap in a visual way." << endl;
+  cout << "Type \"QUit\" if you want to quit." << endl;
   char input2[100];
   cin >> input2;
 
@@ -83,6 +86,7 @@ int main()
 	//remove biggest value
 	int output = my_heap->remove();
 	cout << "The output is " << output << endl;
+	cout << endl;
       }
     else if(strcmp(input2, "ALL") == 0)
       {
@@ -96,17 +100,23 @@ int main()
 		break;
 	      }
 	    cout << num << " ";
+	    cout << endl;
 	  }
       }
     else if(strcmp(input2, "DISPLAY") == 0)
       {
 	//display everthing
 	my_heap->display(1, 0);
+	cout << endl;
+      }
+    else if(strcmp(input2, "QUIT") == 0)
+      {
+	break;
       }
     else
       {
 	cout << "That is not a command" << endl;
       }
-
+    }
   return 0;
 }
