@@ -9,6 +9,11 @@ Node::Node()
   next = NULL;
 }
 
+Node::~Node()
+{
+  delete[] content;
+}
+
 char* Node::getContent()
 {
   return content;

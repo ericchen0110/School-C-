@@ -8,6 +8,7 @@ using namespace std;
 class Node {
  public:
   Node();
+  ~Node();
   char* getContent();
   Node* getNext();
   void setContent(char* input);
