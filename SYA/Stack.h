@@ -11,11 +11,12 @@ class Stack {
   void push(char* input);
   char* pop();
   char* peek();
+  bool isEmpty();
 
  private:
   Node *header = new Node();
   Node* recur(Node* input_header);
   void deleteFun(Node* input_node);
-  void delete_recur(Node* input_header);
+  Node* delete_recur(Node* input_header);
 };
 #endif

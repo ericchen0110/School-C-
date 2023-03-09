@@ -9,6 +9,18 @@ Stack::Stack()
   header->setNext(NULL);
 }
 
+bool Stack::isEmpty()
+{
+  if(header->getNext() == NULL)
+    {
+      return true;
+    }
+  else
+    {
+      return false;
+    }
+}
+
 void Stack::push(char* input)
 {
   //make a node with this input
@@ -60,5 +72,11 @@ Node* Stack::delete_recur(Node* input_header)
 
 char* Stack::peek()
 {
+  //check if empty
+  if(this->isEmpty())
+    {
+      return NULL;
+    }
+  
   return recur(header)->getContent();
 }
