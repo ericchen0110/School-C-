@@ -24,21 +24,28 @@ bool Queue::isEmpty()
 
 void Queue::enqueue(Node* input)
 {
-  tail->getNext()->setNext(input);//put the input at the end of the queue
-
-  tail->setNext(tail->getNext());//set the tail pointer to point to the new node
+  //check if the queue is empty
+  if(tail->getNext() == NULL)
+    {
+      tail->setNext(input);
+    }
+  else
+    {
+      tail->getNext()->setNext(input);//put the input at the end of the queue
+      tail->setNext(tail->getNext());//set the tail pointer to point to the new node
+    }
 }
 
-char* Queue::dequeue()
+char Queue::dequeue()
 {
   //check if queue is empty
   if(this->isEmpty())
     {
-      return NULL;
+      return '\0';
     }
   
   //make a variable to store the output
-  char* output = head->getNext()->getContent();
+  char output = head->getNext()->getContent();
 
   //make a temp node pointer pointing to the head
   Node* temp;

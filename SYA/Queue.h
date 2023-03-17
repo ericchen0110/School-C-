@@ -9,7 +9,7 @@ class Queue{
  public:
   Queue();
   void enqueue(Node* input);
-  char* dequeue();
+  char dequeue();
   bool isEmpty();
   
  private:

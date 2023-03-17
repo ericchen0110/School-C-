@@ -8,9 +8,9 @@ using namespace std;
 class Stack {
  public:
   Stack();
-  void push(char* input);
-  char* pop();
-  char* peek();
+  void push(char input);
+  char pop();
+  char peek();
   bool isEmpty();
 
  private:

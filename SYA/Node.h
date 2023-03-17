@@ -9,13 +9,13 @@ class Node {
  public:
   Node();
   ~Node();
-  char* getContent();
+  char getContent();
   Node* getNext();
-  void setContent(char* input);
+  void setContent(char input);
   void setNext(Node* input);
   
  private:
-  char* content;
+  char content;
   Node* next;
 };
 

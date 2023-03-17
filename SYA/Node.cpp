@@ -5,16 +5,16 @@ using namespace std;
 
 Node::Node()
 {
-  content = NULL;
+  content = '\0';
   next = NULL;
 }
 
 Node::~Node()
 {
-  delete[] content;
+  
 }
 
-char* Node::getContent()
+char Node::getContent()
 {
   return content;
 }
@@ -24,9 +24,9 @@ Node* Node::getNext()
   return next;
 }
 
-void Node::setContent(char* input)
+void Node::setContent(char input)
 {
-  strcpy(content, input);
+  content = input;
 }
 
 void Node::setNext(Node* input)

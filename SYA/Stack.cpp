@@ -21,7 +21,7 @@ bool Stack::isEmpty()
     }
 }
 
-void Stack::push(char* input)
+void Stack::push(char input)
 {
   //make a node with this input
   Node* newNode = new Node();
@@ -43,9 +43,9 @@ Node* Stack::recur(Node* input_header)
   return recur(input_header->getNext());
 }
 
-char* Stack::pop()
+char Stack::pop()
 {
-  char* output = recur(header)->getContent();
+  char output = recur(header)->getContent();
   deleteFun(recur(header));
   return output;
 }
@@ -70,12 +70,12 @@ Node* Stack::delete_recur(Node* input_header)
   return delete_recur(input_header->getNext());
 }
 
-char* Stack::peek()
+char Stack::peek()
 {
   //check if empty
   if(this->isEmpty())
     {
-      return NULL;
+      return '\0';
     }
   
   return recur(header)->getContent();
