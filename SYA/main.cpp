@@ -8,7 +8,7 @@
 
 using namespace std;
 
-BinaryNode* intoTree(vector<char>* input_vector, BinaryNode* head);
+int precedence(char input);
 
 int main()
 {
@@ -41,59 +41,74 @@ int main()
   //go thru the vector
   for(int i=0; i<input_vector->size(); i++)
     {
+      cout << "beginning " << i << myStack->peek() << endl;
       //if is a number, put into queue
-      if(isdigit((*input_vector)[i]) != 0)
+      if(isdigit((*input_vector)[i]))
 	{
+	  cout << "1" << endl;
 	  //make the node for the data
 	  Node* input_node = new Node();
 	  input_node->setContent((*input_vector)[i]);
 	  output_queue->enqueue(input_node);//enqueue
 	}
+      //if left parenthesis
+      else if((*input_vector)[i] == '(')
+	{
+	  cout << "2" << endl;
+	  myStack->push((*input_vector)[i]);
+	}
+      //if right parenthesis
+      else if((*input_vector)[i] == ')')
+	{
+	  cout << "3" << endl;
+	  cout << "top of stack: " << myStack->peek() << endl;
+	  while(myStack->peek() != '(')
+	    {
+	      output_queue->enqueue(myStack->pop());
+	    }
+	}
       //if an operatoin, put into stack
       else
 	{
-	  while(myStack->peek() != '(' && )
+	  cout << "4" << endl;
+	  while(myStack->peek() != '(' && precedence(myStack->peek()) >= precedence((*input_vector)[i]))
 	    {
-	      
+	      output_queue->enqueue(myStack->pop());
+	      myStack->push((*input_vector)[i]);
 	    }
 	}
-    }
+      
+      //keep popping the rest of the stack into the queue
+      while(!myStack->isEmpty())
+	{
+	  output_queue->enqueue(myStack->pop());
+	}
 
-  /*
-  //put everything into a binary expression tree
-  BinaryNode* head = new BinaryNode();
-  head = intoTree(input_vector, head);
-  */
+      //cout << "top of stack: " << myStack->peek() << endl;
+      
+    }
   
   return 0;
 }
 
-int precedence
-
-/*
-BinaryNode* intoTree(vector<char>* input_vector, BinaryNode* head)
+//return the precedence of the input operation
+int precedence(char input)
 {
-  for(int i=0; i<input_vector->size(); i++)
+  switch(input)
     {
-      //check for () 
-      if((*input_vector)[i] == ')')
-	{
-	  return head;
-	}
-      
-      if((*input_vector)[i] == '(')
-	{
-	  //make start and end iterators
-	  auto start = input_vector->begin() + i;
-	  auto end = input_vector->end();
-	  vector<char> *subVector = new vector<char>;//make sub vector
-	  copy(start, end, subVector->begin());//copy into the sub vector
-	  head = intoTree(subVector, head);
-	}
+    case '+': case '-':
+      return 1;
+      break;
 
-      
+    case '*': case '/':
+      return 2;
+      break;
+
+    case '^':
+      return 3;
+      break;
+
+    default:
+      return 0;
     }
-
-  return head;
 }
-*/

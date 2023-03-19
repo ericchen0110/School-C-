@@ -36,6 +36,24 @@ void Queue::enqueue(Node* input)
     }
 }
 
+void Queue::enqueue(char input)
+{
+  //make a node
+  Node *newNode = new Node();
+  newNode->setContent(input);
+
+  //check if the queue is empty
+  if(tail->getNext() == NULL)
+    {
+      tail->setNext(newNode);
+    }
+  else
+    {
+      tail->getNext()->setNext(newNode);
+      tail->setNext(tail->getNext());
+    }
+}
+
 char Queue::dequeue()
 {
   //check if queue is empty

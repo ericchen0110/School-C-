@@ -23,60 +23,50 @@ bool Stack::isEmpty()
 
 void Stack::push(char input)
 {
-  //make a node with this input
+  //make a new node with this input
   Node* newNode = new Node();
   newNode->setContent(input);
-  newNode->setNext(NULL);
 
-  //put it into the stack
-  recur(header)->setNext(newNode);
-}
-
-Node* Stack::recur(Node* input_header)
-{
-  //check if at the end
-  if(input_header->getNext() == NULL)
+  //put into stack
+  if(this->isEmpty())
     {
-      return input_header;
+      header->setNext(newNode);
+    }
+  else
+    {
+      newNode->setNext(header->getNext());
+      header->setNext(newNode);
     }
 
-  return recur(input_header->getNext());
+  cout << "in push: " << this->peek() << endl;
 }
 
 char Stack::pop()
 {
-  char output = recur(header)->getContent();
-  deleteFun(recur(header));
-  return output;
-}
-
-void Stack::deleteFun(Node* input_node)
-{
-  //delete the content in the node
-  delete (delete_recur(header)->getNext());
-
-  //set the previous pointer to NULL
-  delete_recur(header)->setNext(NULL);
-}
-
-Node* Stack::delete_recur(Node* input_header)
-{
-  //check if next next node is null
-  if(input_header->getNext()->getNext() == NULL)
-    {
-      return input_header;
-    }
-
-  return delete_recur(input_header->getNext());
-}
-
-char Stack::peek()
-{
-  //check if empty
   if(this->isEmpty())
     {
       return '\0';
     }
+  else
+    {
+      char output = header->getNext()->getContent();//set the output char
+      Node *temp = header->getNext();
+      header->setNext(header->getNext()->getNext());//set the header to point to the next value
+      delete temp;//delete the node
+      return output;
+    }
+}
+
+char Stack::peek()
+{
+  //cout << "in peek: " << header->getNext() << endl;
   
-  return recur(header)->getContent();
+  if(this->isEmpty())
+    {
+      return '\0';
+    }
+  else
+    {
+      return header->getNext()->getContent();
+    }
 }

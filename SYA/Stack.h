@@ -15,8 +15,8 @@ class Stack {
 
  private:
   Node *header = new Node();
-  Node* recur(Node* input_header);
-  void deleteFun(Node* input_node);
-  Node* delete_recur(Node* input_header);
+  //Node* recur(Node* input_header);
+  //void deleteFun(Node* input_node);
+  //Node* delete_recur(Node* input_header);
 };
 #endif
