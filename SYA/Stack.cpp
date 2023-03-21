@@ -38,7 +38,7 @@ void Stack::push(char input)
       header->setNext(newNode);
     }
 
-  cout << "in push: " << this->peek() << endl;
+  //cout << "in push: " << this->peek() << endl;
 }
 
 char Stack::pop()

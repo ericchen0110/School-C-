@@ -9,12 +9,12 @@ class Queue{
  public:
   Queue();
   void enqueue(Node* input);
-  void enqueue(char input);
+  void enqueue2(char input);
   char dequeue();
   bool isEmpty();
   
  private:
   Node* head = new Node();
-  Node* tail = new Node();
+  //Node* tail = new Node();
 };
 #endif

@@ -37,56 +37,61 @@ int main()
 
   //create a stack
   Stack *myStack = new Stack();
-  
+
   //go thru the vector
   for(int i=0; i<input_vector->size(); i++)
     {
-      cout << "beginning " << i << myStack->peek() << endl;
+      char index = (*input_vector)[i];//set the current char to be a var
+
       //if is a number, put into queue
-      if(isdigit((*input_vector)[i]))
+      if(isdigit(index))
 	{
-	  cout << "1" << endl;
-	  //make the node for the data
+	  //cout << "1" << endl;
 	  Node* input_node = new Node();
-	  input_node->setContent((*input_vector)[i]);
-	  output_queue->enqueue(input_node);//enqueue
+	  input_node->setContent(index);
+	  output_queue->enqueue(input_node);
 	}
-      //if left parenthesis
-      else if((*input_vector)[i] == '(')
+      else if(precedence(index) != 0) //check if is an operator
 	{
-	  cout << "2" << endl;
-	  myStack->push((*input_vector)[i]);
+	  //cout << "2" << endl;
+	  while(myStack->peek() != '(' && precedence(myStack->peek()) >= precedence(index))
+	    {
+	      //cout << "in 2: stack peek: " << myStack->peek()
+	      output_queue->enqueue2(myStack->pop());
+	    }
+	  myStack->push(index);
+	  //cout << "in 2 " << myStack->peek() << endl;
 	}
-      //if right parenthesis
-      else if((*input_vector)[i] == ')')
+      else if(index == '(')
 	{
-	  cout << "3" << endl;
-	  cout << "top of stack: " << myStack->peek() << endl;
+	  //cout << "3" << endl;
+	  myStack->push(index);
+	}
+      else if(index == ')')
+	{
+	  //cout << "4" << endl;
 	  while(myStack->peek() != '(')
 	    {
-	      output_queue->enqueue(myStack->pop());
+	      output_queue->enqueue2(myStack->pop());
 	    }
-	}
-      //if an operatoin, put into stack
-      else
-	{
-	  cout << "4" << endl;
-	  while(myStack->peek() != '(' && precedence(myStack->peek()) >= precedence((*input_vector)[i]))
+	  if(myStack->peek() == '(')
 	    {
-	      output_queue->enqueue(myStack->pop());
-	      myStack->push((*input_vector)[i]);
+	      myStack->pop();
 	    }
 	}
-      
-      //keep popping the rest of the stack into the queue
-      while(!myStack->isEmpty())
-	{
-	  output_queue->enqueue(myStack->pop());
-	}
-
-      //cout << "top of stack: " << myStack->peek() << endl;
-      
     }
+
+  while(!myStack->isEmpty())
+    {
+      output_queue->enqueue2(myStack->pop());
+    }
+
+  
+      while(!output_queue->isEmpty())
+	{
+	  //cout << "working" << endl;
+	  cout << output_queue->dequeue() << " ";
+	}
   
   return 0;
 }
