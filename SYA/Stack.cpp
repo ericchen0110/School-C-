@@ -7,6 +7,8 @@ using namespace std;
 Stack::Stack()
 {
   header->setNext(NULL);
+  BinaryHeader->setLeft(NULL);
+  BinaryHeader->setRight(NULL);
 }
 
 bool Stack::isEmpty()
@@ -19,6 +21,25 @@ bool Stack::isEmpty()
     {
       return false;
     }
+}
+
+void Stack::push(BinaryNode* input)
+{
+  if(BinaryHeader->getLeft() == NULL && BinaryHeader->getRight() == NULL)
+    {
+      BinaryHeader->setLeft(input);
+    }
+  else
+    {
+      
+    }
+}
+
+char Stack::BinaryPop()
+{
+  char output = this->peek();
+  
+  
 }
 
 void Stack::push(char input)

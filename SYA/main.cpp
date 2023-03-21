@@ -37,7 +37,7 @@ int main()
 
   //create a stack
   Stack *myStack = new Stack();
-
+   
   //go thru the vector
   for(int i=0; i<input_vector->size(); i++)
     {
@@ -46,52 +46,80 @@ int main()
       //if is a number, put into queue
       if(isdigit(index))
 	{
-	  //cout << "1" << endl;
-	  Node* input_node = new Node();
+	  Node* input_node = new Node();//make the node to put into the queue
 	  input_node->setContent(index);
 	  output_queue->enqueue(input_node);
 	}
       else if(precedence(index) != 0) //check if is an operator
 	{
-	  //cout << "2" << endl;
-	  while(myStack->peek() != '(' && precedence(myStack->peek()) >= precedence(index))
+	  while(!myStack->isEmpty() && myStack->peek() != '(' && precedence(myStack->peek()) >= precedence(index))
 	    {
-	      //cout << "in 2: stack peek: " << myStack->peek()
-	      output_queue->enqueue2(myStack->pop());
+	      output_queue->enqueue(myStack->pop());//pop from the stack and put into queue
 	    }
-	  myStack->push(index);
-	  //cout << "in 2 " << myStack->peek() << endl;
+	  myStack->push(index);//push into stack
 	}
       else if(index == '(')
 	{
-	  //cout << "3" << endl;
-	  myStack->push(index);
+	  myStack->push(index);//push into stack
 	}
       else if(index == ')')
 	{
-	  //cout << "4" << endl;
 	  while(myStack->peek() != '(')
 	    {
-	      output_queue->enqueue2(myStack->pop());
+	      output_queue->enqueue(myStack->pop());//pop from stack and then put into queue
 	    }
 	  if(myStack->peek() == '(')
 	    {
-	      myStack->pop();
+	      myStack->pop();//pop the ( out
 	    }
 	}
     }
 
   while(!myStack->isEmpty())
     {
-      output_queue->enqueue2(myStack->pop());
+      output_queue->enqueue(myStack->pop());//put the rest of the chars in the stack into the queue
     }
 
-  
-      while(!output_queue->isEmpty())
+  //construct an expression tree
+  Stack *BinaryStack = new Stack();//make a new stack
+
+  //go thru the output queue
+  while(!output_queue->isEmpty())
+    {
+      //make a binary node for each char
+      BinaryNode *newNode = new BinaryNode();
+      newNode->setContent(output_queue->dequeue());
+
+      if(isdigit(newNode->getContent()))//if the char is a number
 	{
-	  //cout << "working" << endl;
-	  cout << output_queue->dequeue() << " ";
+	  BinaryStack->push(newNode);//push the node into the stack
 	}
+    }
+  
+  while(true)
+    {
+      //ask the user which fix do they want
+      cout << "Do you want to diplay in Infix, Prefix, or Postfix?" << endl;
+      char inputChar[100];
+      cin >> inputChar;
+
+      if(strcmp(inputChar, "Infix") == 0)
+	{
+	  //infix
+	}
+      else if(strcmp(inputChar, "Prefix") == 0)
+	{
+	  //prefix
+	}
+      else if(strcmp(inputChar, "Postfix") == 0)
+	{
+	  //postfix
+	}
+      else if(strcmp(inputChar, "Quit") == 0)
+	{
+	  break;
+	}
+    } 
   
   return 0;
 }

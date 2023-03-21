@@ -5,18 +5,29 @@ using namespace std;
 
 BinaryNode::BinaryNode()
 {
+  content = '\0';
   left = NULL;
   right = NULL;
 }
 
-BinaryNode* BinaryNode::getLeft()
+void BinaryNode::setContent(char input)
 {
-  return left;
+  content = input;
 }
 
-BinaryNode* BinaryNode::getRight()
+char BinaryNode::getContent()
 {
-  return right;
+  return content;
+}
+
+char BinaryNode::getLeft()
+{
+  return left->getContent();
+}
+
+char BinaryNode::getRight()
+{
+  return right->getContent();
 }
 
 void BinaryNode::setLeft(BinaryNode* input)

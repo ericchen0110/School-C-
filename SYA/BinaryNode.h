@@ -7,12 +7,15 @@ using namespace std;
 class BinaryNode {
  public:
   BinaryNode();
-  BinaryNode* getLeft();
-  BinaryNode* getRight();
+  void setContent(char input);
+  char getContent();
+  char getLeft();
+  char getRight();
   void setLeft(BinaryNode* input);
   void setRight(BinaryNode* input);
   
  private:
+  char content;
   BinaryNode* left;
   BinaryNode* right;
 };

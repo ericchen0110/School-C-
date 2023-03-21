@@ -9,7 +9,7 @@ class Queue{
  public:
   Queue();
   void enqueue(Node* input);
-  void enqueue2(char input);
+  void enqueue(char input);
   char dequeue();
   bool isEmpty();
   

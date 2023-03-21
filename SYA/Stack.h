@@ -2,6 +2,7 @@
 #define STACK_H
 #include <iostream>
 #include "Node.h"
+#include "BinaryNode.h"
 
 using namespace std;
 
@@ -11,12 +12,14 @@ class Stack {
   void push(char input);
   char pop();
   char peek();
+
+  void push(BinaryNode* input);
+  char BinaryPop();
+  
   bool isEmpty();
 
  private:
   Node *header = new Node();
-  //Node* recur(Node* input_header);
-  //void deleteFun(Node* input_node);
-  //Node* delete_recur(Node* input_header);
+  BinaryNode *BinaryHeader = new BinaryNode();
 };
 #endif
