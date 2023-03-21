@@ -49,9 +49,16 @@ char Stack::pop()
     }
   else
     {
-      char output = header->getNext()->getContent();//set the output char
+      char output = this->peek();//set the output char
       Node *temp = header->getNext();
-      header->setNext(header->getNext()->getNext());//set the header to point to the next value
+      if(header->getNext()->getNext() == NULL)
+	{
+	  header->setNext(NULL);
+	}
+      else
+	{
+	  header->setNext(header->getNext()->getNext());//set the header to point to the next value
+	}
       delete temp;//delete the node
       return output;
     }
