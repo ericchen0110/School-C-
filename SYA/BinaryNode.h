@@ -9,8 +9,8 @@ class BinaryNode {
   BinaryNode();
   void setContent(char input);
   char getContent();
-  char getLeft();
-  char getRight();
+  BinaryNode* getLeft();
+  BinaryNode* getRight();
   void setLeft(BinaryNode* input);
   void setRight(BinaryNode* input);
   

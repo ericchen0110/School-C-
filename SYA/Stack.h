@@ -14,7 +14,8 @@ class Stack {
   char peek();
 
   void push(BinaryNode* input);
-  char BinaryPop();
+  BinaryNode* BinaryPop();
+  BinaryNode* BinaryPeek();
   
   bool isEmpty();
 

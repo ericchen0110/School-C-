@@ -12,7 +12,7 @@ Stack::Stack()
 }
 
 bool Stack::isEmpty()
-{
+{//return true if stack empty, false if not
   if(header->getNext() == NULL)
     {
       return true;
@@ -25,21 +25,50 @@ bool Stack::isEmpty()
 
 void Stack::push(BinaryNode* input)
 {
-  if(BinaryHeader->getLeft() == NULL && BinaryHeader->getRight() == NULL)
-    {
-      BinaryHeader->setLeft(input);
+  BinaryNode* newNode = new BinaryNode();//make a new node pointer to store in stack
+  newNode->setLeft(input);//point to the input node
+  
+  if(BinaryHeader->getRight() == NULL)
+    {//set the header to point at the new node if the stack is empty
+      BinaryHeader->setRight(newNode);
     }
   else
     {
-      
+      newNode->setRight(BinaryHeader->getRight());//point new node to the first node in stack
+      BinaryHeader->setRight(newNode);//point header to the new node
     }
 }
 
-char Stack::BinaryPop()
+BinaryNode* Stack::BinaryPop()
 {
-  char output = this->peek();
+  BinaryNode* output = this->BinaryPeek();//store the output in a var
+  if(BinaryHeader->getRight()->getRight() == NULL)
+    {
+      delete BinaryHeader->getRight();
+      BinaryHeader == NULL;
+    }
+  else
+    {
+      BinaryNode* temp = BinaryHeader->getRight();
+      BinaryHeader->setRight(BinaryHeader->getRight()->getRight());
+      delete temp;
+    }
   
-  
+  return output;
+}
+
+BinaryNode* Stack::BinaryPeek()
+{
+  if(BinaryHeader->getRight() == NULL)
+    {//check if the stack is empty
+      cout << "stack is empty!" << endl;
+      return NULL;
+    }
+  else
+    {
+      //cout << BinaryHeader->getRight()->getLeft()->getContent();
+      return BinaryHeader->getRight()->getLeft();//return the node that the first node in the stack points to
+    }
 }
 
 void Stack::push(char input)

@@ -20,14 +20,14 @@ char BinaryNode::getContent()
   return content;
 }
 
-char BinaryNode::getLeft()
+BinaryNode* BinaryNode::getLeft()
 {
-  return left->getContent();
+  return left;
 }
 
-char BinaryNode::getRight()
+BinaryNode* BinaryNode::getRight()
 {
-  return right->getContent();
+  return right;
 }
 
 void BinaryNode::setLeft(BinaryNode* input)
