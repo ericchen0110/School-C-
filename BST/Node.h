@@ -16,7 +16,7 @@ class Node {
   
  private:
   int value;
-  Node* left = new Node(0);
-  Node* right = new Node(0);
+  Node* left;
+  Node* right;
 };
 #endif

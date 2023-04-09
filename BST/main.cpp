@@ -1,8 +1,14 @@
+/*Written by Eric Chen
+  Date: 4/9/2023
+  This is the main of a binary search tree program
+*/
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
 #include <vector>
 #include "Node.h"
+#include "BST.h"
 
 using namespace std;
 
@@ -44,13 +50,56 @@ int main()
     }
   else
     {
-      cout << "You are such an idiot - Morgan" << endl;
+      cout << "That is not a command" << endl;
       return 0;
     }
 
-  for(int i=0; i<input_vector->size(); i++)
+  //go thru the vector and add them to the Binary Search Tree
+  Node* head = new Node((*input_vector)[0]);//make the node for the head
+  BST* new_BST = new BST(head);//make a BST
+  
+  for(int i=1; i<input_vector->size(); i++)//go thru the vector
     {
-      cout << (*input_vector)[i] << " ";
+      new_BST->add((*input_vector)[i]);//add each number into the BST
+    }
+
+  //ask the user what they wanna do
+  while(true)
+    {
+      cout << "__________________________________________________________\n";
+      cout << "What do you want to do? (Add, Search, Print, Delete, Quit)" << endl;
+      char input2[100];
+      cin >> input2;
+
+      if(strcmp(input2, "Search") == 0)
+	{//search
+	  cout << "Number: ";
+	  int input3;
+	  cin>>input3;
+	  new_BST->search(input3);
+	}
+      else if(strcmp(input2, "Print") == 0)
+	{//print
+	  new_BST->print1();
+	}
+      else if(strcmp(input2, "Add") == 0)
+	{//add
+	  cout << "Number that you want to add: ";
+	  int input3;
+	  cin >> input3;
+	  new_BST->add(input3);
+	}
+      else if(strcmp(input2, "Delete") == 0)
+	{//delete
+	  cout << "Number that you want to delete: ";
+	  int input3;
+	  cin >> input3;
+	  new_BST->remove(input3);
+	}
+      else if(strcmp(input2, "Quit") == 0)
+	{
+	  break;
+	}
     }
   
   return 0;

@@ -10,8 +10,13 @@ class BST {
   BST(Node* head);
   void add(int input);
   void addRecur(Node* newNode, Node* parent);
+  void addRecur2(Node* parent);
   void remove(int input);
-  void print();
+  void removeRecur(Node* parent, int input);
+  void print(Node* header, int space);
+  void print1();
+  void search(int input);
+  void searchRecur(Node* parent, int input);
   
  private:
   Node* head;
