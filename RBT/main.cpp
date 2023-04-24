@@ -43,4 +43,33 @@ int main()
 
   //put the numbers into a black red tree
   RBT* myTree = new RBT();//make a RBT
+  myTree->insert(3);
+  myTree->insert(2);
+
+  myTree->print();
+  //ask for input
+  cout << "What do you want to do? Insert, Delete, Print, Quit" << endl;
+  char input2[100];
+  cin.get(input2, 100);
+  cin.get();
+
+  while(true)
+    {
+      if(strcmp(input2, "Insert") == 0)
+	{//insert
+      
+	}
+      else if(strcmp(input2, "Delete") == 0)
+	{//delete
+      
+	}
+      else if(strcmp(input2, "Print") == 0)
+	{//print
+	  myTree->print();
+	}
+      else if(strcmp(input2, "Quit") == 0)
+	{
+	  break; 
+	}
+    }
 }

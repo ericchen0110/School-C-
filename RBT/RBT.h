@@ -14,9 +14,12 @@ struct node {
 class RBT {
  public:
   RBT();
-  void insert();
+  void insert(int num);
+  void print();
   
  private:
+  bool addRight(int num1, int num2);
+  void printRecur(node* header, int space);
   node* head;
 };
 #endif
