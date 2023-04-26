@@ -43,18 +43,22 @@ int main()
 
   //put the numbers into a black red tree
   RBT* myTree = new RBT();//make a RBT
-  myTree->insert(3);
-  myTree->insert(2);
 
-  myTree->print();
+  //put everything into the tree
+  for(int i=0; i<input_vector->size(); i++)
+    {
+      myTree->insert((*input_vector)[i]);
+    }
+  
   //ask for input
-  cout << "What do you want to do? Insert, Delete, Print, Quit" << endl;
   char input2[100];
-  cin.get(input2, 100);
-  cin.get();
-
+  
   while(true)
     {
+      cout << "_________________________________________________________" << endl;
+      cout << "What do you want to do? Insert, Delete, Print, Quit" << endl;
+      cin >> input2;
+
       if(strcmp(input2, "Insert") == 0)
 	{//insert
       
