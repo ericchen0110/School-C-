@@ -19,49 +19,78 @@ void RBT::insert(int num)
   newNode->right = nullptr;
   newNode->parent = nullptr;
   
-  //if this is the node
-  if(head == nullptr)
-    {
-      head = newNode;
-      return;
-    }
-
-  //if adding to the head
-  if(head->left == nullptr && head->right == nullptr)
-    {
-      head->color = 'b';//change the color to black
-      if(addRight(head->value, newNode->value))
-	{//add to the right of the head if the value is greater than the head
-	  head->right = newNode;
-	  newNode->position = 'R';
-	}
-      else
-	{//add to left if otherwise
-	  head->left = newNode;
-	  newNode->position = 'L';
-	}
-      newNode->parent = newNode;
-      return;
-    }
-
-  //add normally if otherwise
+  //add
   add(newNode, head);
 
+  //fix
+  fix(newNode);
+}
+
+void RBT::fix(node* newNode)
+{
   if(newNode->parent != nullptr && newNode->parent->parent != nullptr)
     {
       node* grandparent = newNode->parent->parent;//define grandparent
+
+      //check case 2, parent is black
+      if(newNode->parent->color == 'b')
+	{
+	  return;
+	}
       
-      //case 3: parent and uncle are red
+      //check case 3, parent and uncle are red
       case3(newNode, grandparent);
+
+      //check case 4
+      case4(newNode, grandparent);
+
+      //check case 5
+      case5(newNode, grandparent);
     }
+}
+
+void RBT::case4(node* newNode, node* grandparent)
+{
+  if(newNode->parent->color == 'r')
+    {
+      if(newNode->parent->position == 'L' && newNode->position == 'R' && grandparent->right->color == 'b')
+	{//parent is left, new node is right
+	  //node* temp = newNode->parent;//make a temp for parent
+
+	  //change parent node
+	  newNode->parent->parent = newNode;//change parent's parent to new node
+	  newNode->parent->right = newNode->left;
+	  
+	  
+	  //change new node
+	  newNode->left = newNode->parent;//change new node left to the parent
+	  newNode->parent = grandparent;//change parent pointer to grandparent
+	  grandparent->left = newNode;//change grandparent to point to new node
+	  
+	}
+      else if(newNode->parent->position == 'R' && newNode->position == 'L' && grandparent->left->color == 'b')
+	{//parent is right, new node is left
+	  
+	}
+    }
+}
+
+void RBT::case5(node* newNode, node* grandparent)
+{
+  
 }
 
 void RBT::case3(node* newNode, node* grandparent)
 {
-  if(newNode->color == 'r' && grandparent->left->color == 'r' && grandparent->right->color == 'r')
+  if(grandparent->left != nullptr && grandparent->right != nullptr)
     {
+      if(newNode->color == 'r' && grandparent->left->color == 'r' && grandparent->right->color == 'r')
       //set parent and uncle to black
-      if
+      grandparent->left->color = 'b';
+      grandparent->right->color = 'b';
+      grandparent->color = 'r';//set grandparent to red
+
+      fix(grandparent);//check grandparent
     }
   else
     {
@@ -71,6 +100,14 @@ void RBT::case3(node* newNode, node* grandparent)
 
 void RBT::add(node* newNode, node* header)
 {
+  //case 1: if this is the head
+  if(head == nullptr)
+    {
+      head = newNode;
+      head->color = 'b';//change into black node
+      return;
+    }
+  
   //determine right or left
   if(addRight(header->value, newNode->value))
     {//check right
@@ -124,7 +161,7 @@ void RBT::printRecur(node* header, int space)
       return;
     }
 
-  space += 4;
+  space += 8;
   printRecur(header->right, space);//print out right side
 
   cout << endl;
@@ -132,6 +169,6 @@ void RBT::printRecur(node* header, int space)
     {//print out the spacing
       cout << " ";
     }
-  cout << header->value << endl;//print out the number
+  cout << header->value << ", " << header->color << endl;//print out the number & color
   printRecur(header->left, space);//print out left side
 }

@@ -23,8 +23,11 @@ class RBT {
   void add(node* newNode, node* header);
   bool addRight(int parent, int child);
   void printRecur(node* header, int space);
+  void fix(node* newNode);
   void case3(node* newNode, node* grandparent);
-
+  void case4(node* newNode, node* grandparent);
+  void case5(node* newNode, node* grandparent);
+  
   node* head;
 };
 #endif
