@@ -39,13 +39,13 @@ void RBT::fix(node* newNode)
 	}
       
       //check case 3, parent and uncle are red
-      case3(newNode, grandparent);
+      //case3(newNode, grandparent);
 
       //check case 4
-      case4(newNode, grandparent);
+      //case4(newNode, grandparent);
 
       //check case 5
-      case5(newNode, grandparent);
+      //case5(newNode, grandparent);
     }
 }
 
@@ -53,7 +53,7 @@ void RBT::case4(node* newNode, node* grandparent)
 {
   if(newNode->parent->color == 'r')
     {
-      if(newNode->parent->position == 'L' && newNode->position == 'R' && grandparent->right->color == 'b')
+      if( (grandparent->right == nullptr || grandparent->right->color == 'r') && newNode->parent->position == 'L' && newNode->position == 'R')
 	{//parent is left, new node is right
 	  //node* temp = newNode->parent;//make a temp for parent
 
@@ -66,18 +66,59 @@ void RBT::case4(node* newNode, node* grandparent)
 	  newNode->left = newNode->parent;//change new node left to the parent
 	  newNode->parent = grandparent;//change parent pointer to grandparent
 	  grandparent->left = newNode;//change grandparent to point to new node
-	  
+	  case5(newNode->left, newNode->parent);//call case5
 	}
-      else if(newNode->parent->position == 'R' && newNode->position == 'L' && grandparent->left->color == 'b')
+      else if( (grandparent->left == nullptr || grandparent->left->color == 'b') && newNode->parent->position == 'R' && newNode->position == 'L')
 	{//parent is right, new node is left
-	  
+	  //change the parent node
+	  newNode->parent->parent = newNode;
+	  newNode->parent->left = newNode->right;
+
+	  //change new node
+	  newNode->right = newNode->parent;
+	  newNode->parent = grandparent;
+	  grandparent->right = newNode;
+
+	  case5(newNode->right, newNode->parent);
 	}
     }
 }
 
 void RBT::case5(node* newNode, node* grandparent)
 {
-  
+  if( (grandparent->right == nullptr || grandparent->right->color == 'b') && newNode->parent->position == 'L' && newNode->position == 'L')
+    {//parent is left and node is left
+      //change color
+      switchColor(newNode->parent);
+      switchColor(grandparent);
+      
+      node parent = *(newNode->parent);//make a node pointer for parent
+      node newNodeTemp = *newNode;
+      node grandparentTemp = *grandparent;
+
+      grandparent->left = parent.right;
+      grandparent->parent = &parent;
+
+      if(newNode->parent->right != nullptr)
+	{
+	  newNode->parent->right->parent = &grandparentTemp;
+	}
+      newNode->parent->right = &grandparentTemp;
+      newNode->parent->parent = grandparentTemp.parent;
+      
+    }
+}
+
+void RBT::switchColor(node* newNode)
+{
+  if(newNode->color == 'r')
+    {
+      newNode->color = 'b';
+    }
+  else if(newNode->color == 'b')
+    {
+      newNode->color = 'r';
+    }
 }
 
 void RBT::case3(node* newNode, node* grandparent)

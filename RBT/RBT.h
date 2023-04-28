@@ -27,6 +27,7 @@ class RBT {
   void case3(node* newNode, node* grandparent);
   void case4(node* newNode, node* grandparent);
   void case5(node* newNode, node* grandparent);
+  void switchColor(node* newNode);
   
   node* head;
 };
