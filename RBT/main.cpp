@@ -1,3 +1,8 @@
+/*Written by Eric Chen
+  Date: 4/29/2023
+  This is the main funciton of the red black tree proejct
+*/
+
 #include <iostream>
 #include <fstream>
 #include <cstring>
@@ -8,88 +13,81 @@ using namespace std;
 
 int main()
 {
-  vector<int> *input_vector = new vector<int>;//create the input vector
+  RBT* myTree = new RBT();//make the tree
 
   while(true)
     {
-      //ask if the user wants to input from console or file
-      cout << "Do you want to input from console or file? Type \"console\" for console and \"file\" for file." << endl;
-      char input1[100];
-      cin.get(input1, 100);
-      cin.get();
-      if(strcmp(input1, "console") == 0)
-	{//input from console
-	  cout << "Type your numbers here, type -1 at the end of the numbers" << endl;
-	  int input_int = 0;
-	  cin >> input_int;
-	  while(input_int != -1)
-	    {
-	      input_vector->push_back(input_int);
-	      cin >> input_int;
+      cout << "__________________________________________________________________" << endl;
+      cout << "What do you want to do? Insert, Read, Delete, Print, Quit" << endl;
+
+      //get input
+      char input[100];
+      cin.getline(input, 100);
+
+      if(strcmp(input, "Read") == 0)
+	{
+	  //read
+	  vector<int> *input_vector = new vector<int>;//make input vector
+
+	  cout << "Do you want to from console or from a file? Type \"console\" for console and \"file\" for file" << endl;
+	  char input1[100];
+	  cin.getline(input1, 100);
+
+	  if(strcmp(input1, "console") == 0)
+	    {//console
+	      cout << "Type your numbers here, type -1 at the end of the numbers" << endl;
+	      int inputInt = 0;
+	      cin >> inputInt;
+	      while(inputInt != -1)
+		{
+		  input_vector->push_back(inputInt);
+		  cin >> inputInt;
+		}
+	      cin.get();
 	    }
-	  break;
-	}
-      else if(strcmp(input1, "file") == 0)
-	{//input from file
-	  cout << "File name: ";
-	  char name[100];
-	  cin >> name;
-	  ifstream fInput(name);
-	  int fileInput = 0;
-      
-	  while(!fInput.eof())
-	    {
-	      fInput >> fileInput;
-	      input_vector->push_back(fileInput);
+	  else if(strcmp(input1, "file") == 0)
+	    {//file
+	      cout << "File name: ";
+	      char name[100];
+	      cin.getline(name, 100);
+	      ifstream fInput(name);
+	      int fileInput = 0;
+
+	      while(!fInput.eof())
+		{
+		  fInput >> fileInput;
+		  input_vector->push_back(fileInput);
+		}
 	    }
-	  break;
+
+	  //input everything from vector to the tree
+	  for(int i=0; i<input_vector->size(); i++)
+	    {
+	      myTree->insert((*input_vector)[i]);
+	    }
 	}
-    }
-
-  //put the numbers into a black red tree
-  RBT* myTree = new RBT();//make a RBT
-
-  //test
-  
-
-
-
-
-
-
-
-
-  
-  //put everything into the tree
-  for(int i=0; i<input_vector->size(); i++)
-    {
-      myTree->insert((*input_vector)[i]);
-    }
-  
-  //ask for input
-  char input2[100];
-  
-  while(true)
-    {
-      cout << "_________________________________________________________" << endl;
-      cout << "What do you want to do? Insert, Delete, Print, Quit" << endl;
-      cin >> input2;
-
-      if(strcmp(input2, "Insert") == 0)
-	{//insert
-      
+      else if(strcmp(input, "Insert") == 0)
+	{
+	  //insert
+	  cout << "Number:";
+	  int input2 = 0;
+	  cin >> input2;
+	  myTree->insert(input2);
 	}
-      else if(strcmp(input2, "Delete") == 0)
-	{//delete
-      
+      else if(strcmp(input, "Delete") == 0)
+	{
+	  //delete
+	  cout << "Function not available yet" << endl;
 	}
-      else if(strcmp(input2, "Print") == 0)
-	{//print
+      else if(strcmp(input, "Print") == 0)
+	{
+	  //print
 	  myTree->print();
 	}
-      else if(strcmp(input2, "Quit") == 0)
+      else if(strcmp(input, "Quit") == 0)
 	{
-	  break; 
+	  break;
 	}
     }
+
 }
