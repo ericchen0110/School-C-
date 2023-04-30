@@ -263,7 +263,7 @@ void RBT::add(node* newNode, node* header)
     {//check left
       if(header->left == nullptr)
 	{//add to left
-	  cout << "add left" << endl;
+	  //cout << "add left" << endl;
 	  header->left = newNode;
 	  newNode->parent = header;
 	  newNode->position = 'L';
