@@ -43,7 +43,7 @@ void RBT::fix(node* newNode)
       //check case 2, parent is black
       if(newNode->parent->color == 'b')
 	{
-	  //cout << "case2" << endl;
+	  cout << "case2" << endl;
 	  return;
 	}
       
@@ -67,9 +67,12 @@ void RBT::case4(node* newNode, node* grandparent)
 
 	  //cout << "case4 1" << endl;
 
-	  char tPosition = newNode->position;
-	  newNode->position = newNode->parent->position;
-	  newNode->parent->position = tPosition;
+	  //char tPosition = newNode->position;
+	  //newNode->position = newNode->parent->position;
+	  //newNode->parent->position = tPosition;
+
+	  newNode->position = 'L';
+	  newNode->parent->position = 'L';
 	  
 	  //change parent node
 	  newNode->parent->parent = newNode;//change parent's parent to new node
@@ -80,6 +83,7 @@ void RBT::case4(node* newNode, node* grandparent)
 	  newNode->left = newNode->parent;//change new node left to the parent
 	  newNode->parent = grandparent;//change parent pointer to grandparent
 	  grandparent->left = newNode;//change grandparent to point to new node
+	  
 	  case5(newNode->left, newNode->parent);//call case5
 	}
       else if( (grandparent->left == nullptr || grandparent->left->color == 'b') && newNode->parent->position == 'R' && newNode->position == 'L')
@@ -87,9 +91,12 @@ void RBT::case4(node* newNode, node* grandparent)
 
 	  //cout << "case4 2" << endl;
 
-	  char tPosition = newNode->position;
-	  newNode->position = newNode->parent->position;
-	  newNode->parent->position = tPosition;
+	  //ar tPosition = newNode->position;
+	  //newNode->position = newNode->parent->position;
+	  //newNode->parent->position = tPosition;
+
+	  newNode->position = 'R';
+	  newNode->parent->position = 'R';
 	  
 	  //change the parent node
 	  newNode->parent->parent = newNode;
@@ -109,6 +116,7 @@ void RBT::case5(node* newNode, node* grandparent)
 {
   if(newNode->parent->color == 'r')
     {
+      //cout << "case 5" << endl;
       if( (grandparent->right == nullptr || grandparent->right->color == 'b') && newNode->parent->position == 'L' && newNode->position == 'L')
 	{//parent is left and node is left
 

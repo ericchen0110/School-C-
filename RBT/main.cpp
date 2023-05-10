@@ -23,7 +23,7 @@ int main()
       //get input
       char input[100];
       cin.getline(input, 100);
-
+      
       if(strcmp(input, "Read") == 0)
 	{
 	  //read
