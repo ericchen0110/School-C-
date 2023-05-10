@@ -10,6 +10,45 @@ RBT::RBT()
   head = nullptr;
 }
 
+void RBT::deleteFun(int num)
+{
+  node* resultNode = nullptr;
+  node* deleteNode = search(head, num, resultNode);
+
+  if(deleteNode == nullptr)
+    {//print out message if can't find number
+      cout << "This number is not in the tree" << endl;
+      return;
+    }
+
+  cout << "Num: " << deleteNode->value << endl;
+}
+
+node* RBT::search(node* header, int num, node* result)
+{
+  if(header == nullptr)
+    {//return null if number isn't in the tree
+      return header;
+    }
+
+  if(header->value == num)
+    {//return the pointer of the header
+      return header;
+    }
+
+  //if number bigger than current
+  if(num > header->value)
+    {
+      result = search(header->right, num, result);
+    }
+  else
+    {
+      result = search(header->left, num, result);
+    }
+
+  return result;
+}
+
 void RBT::insert(int num)
 {
   //make a node
@@ -65,12 +104,7 @@ void RBT::case4(node* newNode, node* grandparent)
       if( (grandparent->right == nullptr || grandparent->right->color == 'b') && newNode->parent->position == 'L' && newNode->position == 'R')
 	{//parent is left, new node is right
 
-	  //cout << "case4 1" << endl;
-
-	  //char tPosition = newNode->position;
-	  //newNode->position = newNode->parent->position;
-	  //newNode->parent->position = tPosition;
-
+	  //change position
 	  newNode->position = 'L';
 	  newNode->parent->position = 'L';
 	  
@@ -89,12 +123,7 @@ void RBT::case4(node* newNode, node* grandparent)
       else if( (grandparent->left == nullptr || grandparent->left->color == 'b') && newNode->parent->position == 'R' && newNode->position == 'L')
 	{//parent is right, new node is left
 
-	  //cout << "case4 2" << endl;
-
-	  //ar tPosition = newNode->position;
-	  //newNode->position = newNode->parent->position;
-	  //newNode->parent->position = tPosition;
-
+	  //change position
 	  newNode->position = 'R';
 	  newNode->parent->position = 'R';
 	  
@@ -116,11 +145,8 @@ void RBT::case5(node* newNode, node* grandparent)
 {
   if(newNode->parent->color == 'r')
     {
-      //cout << "case 5" << endl;
       if( (grandparent->right == nullptr || grandparent->right->color == 'b') && newNode->parent->position == 'L' && newNode->position == 'L')
 	{//parent is left and node is left
-
-	  //cout << "case5 1" << endl;
 
 	  //change position
 	  char oGrandparentP = grandparent->position;
@@ -164,8 +190,6 @@ void RBT::case5(node* newNode, node* grandparent)
       else if( (grandparent->left == nullptr || grandparent->left->color == 'b') && newNode->parent->position == 'R' && newNode->position == 'R')
 	{//parent is right and node is right
 
-	  //cout << "case5 2" << endl;
-      
 	  //change color
 	  switchColor(newNode->parent);
 	  switchColor(grandparent);

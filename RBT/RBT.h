@@ -18,6 +18,8 @@ class RBT {
   RBT();
   void insert(int num);
   void print();
+  void deleteFun(int num);
+  node* search(node* header, int num, node* result);
   
  private:
   void add(node* newNode, node* header);

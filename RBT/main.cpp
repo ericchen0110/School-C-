@@ -73,11 +73,16 @@ int main()
 	  int input2 = 0;
 	  cin >> input2;
 	  myTree->insert(input2);
+	  cin.get();
 	}
       else if(strcmp(input, "Delete") == 0)
 	{
 	  //delete
-	  cout << "Function not available yet" << endl;
+	  cout << "Number:";
+	  int input3 = 0;
+	  cin >> input3;
+	  myTree->deleteFun(input3);
+	  cin.get();
 	}
       else if(strcmp(input, "Print") == 0)
 	{
