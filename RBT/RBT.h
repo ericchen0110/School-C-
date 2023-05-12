@@ -20,6 +20,7 @@ class RBT {
   void print();
   void deleteFun(int num);
   node* search(node* header, int num, node* result);
+  void searchFun(int num);
   
  private:
   void add(node* newNode, node* header);
@@ -30,6 +31,11 @@ class RBT {
   void case4(node* newNode, node* grandparent);
   void case5(node* newNode, node* grandparent);
   void switchColor(node* newNode);
+  node* rightMost(node* input);
+
+  void deleteCheck(node* deleteNode, node* newNode);
+
+  void deleteNodeFun(node* input);
   
   node* head;
 };

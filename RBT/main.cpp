@@ -18,7 +18,7 @@ int main()
   while(true)
     {
       cout << "__________________________________________________________________" << endl;
-      cout << "What do you want to do? Insert, Read, Delete, Print, Quit" << endl;
+      cout << "What do you want to do? Insert, Read, Search, Delete, Print, Quit" << endl;
 
       //get input
       char input[100];
@@ -88,6 +88,14 @@ int main()
 	{
 	  //print
 	  myTree->print();
+	}
+      else if(strcmp(input, "Search") == 0)
+	{//search
+	  cout << "Number:";
+	  int input4 = 0;
+	  cin >> input4;
+	  myTree->searchFun(input4);
+	  cin.get();
 	}
       else if(strcmp(input, "Quit") == 0)
 	{

@@ -21,7 +21,91 @@ void RBT::deleteFun(int num)
       return;
     }
 
-  cout << "Num: " << deleteNode->value << endl;
+  //if has one child
+  if( (deleteNode->left == nullptr && deleteNode->right != nullptr) || (deleteNode->left != nullptr && deleteNode->right == nullptr))
+    {
+      if(deleteNode->left != nullptr)
+	{//move the left up
+	  deleteCheck(deleteNode, deleteNode->left);
+	}
+      else if(deleteNode->right != nullptr)
+	{//move the right up
+	  deleteCheck(deleteNode, deleteNode->right);
+	}
+    }
+
+  //has two childs
+  if(deleteNode->left != nullptr && deleteNode->right != nullptr)
+    {
+      node* newNode = rightMost(deleteNode->left);
+      head->value = newNode->value;
+      deleteCheck(newNode, newNode->left);
+    }
+}
+
+node* RBT::rightMost(node* input)
+{
+  if(input->right == nullptr)
+    {
+      return input;
+    }
+
+  return rightMost(input->right);
+}
+
+void RBT::deleteCheck(node* deleteNode, node* newNode)
+{
+  //deleteNode is red and newNode black
+  if(deleteNode->color == 'r' && newNode->color == 'b')
+    {
+      deleteNodeFun(deleteNode);
+    }
+}
+
+void RBT::deleteNodeFun(node* input)
+{
+  node* parent = input->parent;
+  node* leftC = input->left;
+  node* rightC = input->right;
+
+  if(rightC == nullptr)
+    {//move left up
+      if(input->position == 'L')
+	{
+	  parent->left = leftC;
+	}
+      else if(input->position == 'R')
+	{
+	  parent->right = leftC;
+	}
+      leftC->parent = parent;
+    }
+  else if(leftC == nullptr)
+    {//move right up
+      if(input->position == 'R')
+	{
+	  parent->right = rightC;
+	}
+      else if(input->position == 'L')
+	{
+	  parent->left = rightC;
+	}
+      rightC->parent = parent;
+    }
+  delete input;
+}
+
+void RBT::searchFun(int num)
+{
+  node* resultNode = nullptr;
+  if(search(head, num, resultNode) == nullptr)
+    {
+      cout << "This number isn't in the tree." << endl;
+    }
+  else
+    {
+      cout << "This number is in the tree." << endl;
+    }
 }
 
 node* RBT::search(node* header, int num, node* result)
