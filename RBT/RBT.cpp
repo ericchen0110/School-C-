@@ -37,8 +37,9 @@ void RBT::deleteFun(int num)
   //has two childs
   if(deleteNode->left != nullptr && deleteNode->right != nullptr)
     {
+      cout << "working 1" << endl;
       node* newNode = rightMost(deleteNode->left);
-      head->value = newNode->value;
+      deleteNode->value = newNode->value;
       deleteCheck(newNode, newNode->left);
     }
 }
@@ -56,18 +57,78 @@ node* RBT::rightMost(node* input)
 void RBT::deleteCheck(node* deleteNode, node* newNode)
 {
   //deleteNode is red and newNode black
-  if(deleteNode->color == 'r' && newNode->color == 'b')
+  if(deleteNode->color == 'r' && (newNode == nullptr || newNode->color == 'b'))
     {
+      cout << "working 2" << endl;
       deleteNodeFun(deleteNode);
+      return;
+    }
+  
+  if(deleteNode->color == 'b' && newNode->color == 'r')
+    {
+      //deleteNode is black and newNode is red
+      deleteNode->value = newNode->value;
+      deleteNodeFun(newNode);
+      return;
+    }
+  
+  if(deleteNode->color == 'b' && (newNode == nullptr ||newNode->color == 'b'))
+    {//both black
+      if(deleteCase1(deleteNode, newNode))
+	{
+	  return;
+	}
+
+      if(deleteCase2(deleteNode, newNode))
+	{
+	  return;
+	}
+    }
+}
+
+bool RBT::deleteCase2(node* deleteNode, node* newNode)
+{//sibling is red
+  if(
+}
+
+bool RBT::deleteCase1(node* deleteNode, node* newNode)
+{
+  //if deleteNode is head
+  if(head == deleteNode)
+    {
+      if(newNode != nullptr)
+	{
+	  deleteNode->value = newNode->value;
+	}
+      deleteNodeFun(deleteNode);
+      return true;
+    }
+  else
+    {
+      return false;
     }
 }
 
 void RBT::deleteNodeFun(node* input)
 {
+
+  cout << "working 3" << endl;
+  
   node* parent = input->parent;
   node* leftC = input->left;
   node* rightC = input->right;
 
+  if(rightC == nullptr && leftC == nullptr)
+    {
+      if(input->position == 'L')
+	{
+	  parent->left = nullptr;
+	}
+      else if(input->position == 'R')
+	{
+	  parent->right = nullptr;
+	}
+    }
   if(rightC == nullptr)
     {//move left up
       if(input->position == 'L')
