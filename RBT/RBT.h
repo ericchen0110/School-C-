@@ -34,8 +34,10 @@ class RBT {
   node* rightMost(node* input);
 
   void deleteCheck(node* deleteNode, node* newNode);
-  bool deleteCase1(node* deleteNode, node* newNode);
-  bool deleteCase2(node* deleteNode, node* newNode);
+  void deleteFix(node* newNode);
+  bool deleteCase1(node* newNode);
+  bool deleteCase2(node* newNode);
+  bool deleteCase3(node* newNode);
   
   void deleteNodeFun(node* input);
   
