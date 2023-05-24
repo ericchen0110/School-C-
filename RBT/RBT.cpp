@@ -14,7 +14,7 @@ void RBT::deleteFun(int num)
 {
   node* resultNode = nullptr;
   node* deleteNode = search(head, num, resultNode);
-
+  
   if(deleteNode == nullptr)
     {//print out message if can't find number
       cout << "This number is not in the tree" << endl;
@@ -46,6 +46,108 @@ void RBT::deleteFun(int num)
       node* newNode = rightMost(deleteNode->left);
       deleteNode->value = newNode->value;
       deleteCheck(newNode, newNode->left);
+    }
+}
+
+void RBT::rightRotate(node* input)
+{
+  node* parent = input->parent;
+  node* leftC = input->left;
+  node* rightC = input->right;
+  node* one = nullptr;
+  node* two = nullptr;
+
+  if(leftC != nullptr)
+    {
+      one = leftC->left;
+      two = leftC->right;
+    }
+
+  char oPosition = input->position;
+
+  //change input
+  input->parent = leftC;
+  input->position = 'R';
+  if(leftC != nullptr)
+    {
+      input->left = two;
+    }
+  else
+    {
+      input->left = nullptr;
+    }
+
+  //change parent
+  if(oPosition = 'L')
+    {
+      parent->left = leftC;
+    }
+  else if(oPosition = 'R')
+    {
+      parent->right = rightC;
+    }
+
+  //change left child
+  leftC->parent = parent;
+  leftC->right = input;
+  leftC->position = oPosition;
+
+  //change node two if exist
+  if(leftC != nullptr)
+    {
+      two->parent = input;
+      two->position = 'L';
+    }
+}
+
+void RBT::leftRotate(node* input)
+{
+  node* parent = input->parent;
+  node* leftC = input->left;
+  node* rightC = input->right;
+  node* one = nullptr;
+  node* two = nullptr;
+  
+  if(rightC != nullptr)
+    {
+      one = rightC->left;
+      two = rightC->right;
+    }
+  
+  char oPosition = input->position;
+
+  //change input node
+  input->position = 'L';
+  input->parent = rightC;
+  if(rightC != nullptr)
+    {
+      input->right = one;
+    }
+  else
+    {
+      input->right = nullptr;
+    }
+  
+  //change parent
+  if(oPosition == 'L')
+    {
+      parent->left = rightC;
+    }
+  else if(oPosition == 'R')
+    {
+      parent->right = rightC;
+    }
+
+  //change right child
+  rightC->parent = parent;
+  rightC->left = input;
+  rightC->position = oPosition;
+
+  //change node 1 if exist
+  if(rightC != nullptr)
+    {
+      one->parent = input;
+      one->position = 'R';
     }
 }
 

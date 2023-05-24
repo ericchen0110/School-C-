@@ -40,6 +40,10 @@ class RBT {
   bool deleteCase3(node* newNode);
   
   void deleteNodeFun(node* input);
+
+  void leftRotate(node* input);
+  void rightRotate(node* input);
+
   
   node* head;
 };
