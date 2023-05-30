@@ -456,8 +456,8 @@ bool RBT::deleteCase2(node* newNode)
 	  cout << "delete case2, 1" << endl;
 
 	  //change color
-	  switchColor(parent);
-	  switchColor(sibling);
+	  parent->color = 'r';
+	  sibling->color = 'b';
 
 	  //tree rotation
 	  leftRotate(parent);
@@ -475,8 +475,8 @@ bool RBT::deleteCase2(node* newNode)
 	  cout << "delete case2, 2" << endl;
 
 	  //change color
-	  switchColor(parent);
-	  switchColor(sibling);
+	  parent->color = 'r';
+	  sibling->color = 'b';
 
 	  //right rotate
 	  rightRotate(parent);
@@ -502,7 +502,7 @@ bool RBT::deleteCase3(node* newNode)
     {//sibling is black
       node* sibling = parent->right;
 
-      if(isBlack(newNode) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
+      if(isBlack(parent) && isBlack(newNode) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
 	{
 	  cout << "case 3, 1" << endl;
 	  
@@ -516,7 +516,7 @@ bool RBT::deleteCase3(node* newNode)
     {//sibling is black
       node* sibling = parent->left;
 
-      if(isBlack(newNode) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
+      if(isBlack(parent) && isBlack(newNode) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
 	{
 	  cout << "case 3, 2" << endl;
 	  
