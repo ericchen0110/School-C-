@@ -38,12 +38,17 @@ class RBT {
   bool deleteCase1(node* newNode);
   bool deleteCase2(node* newNode);
   bool deleteCase3(node* newNode);
+  bool deleteCase4(node* newNode);
+  bool deleteCase5(node* newNode);
+  bool deleteCase6(node* newNode);
   
   void deleteNodeFun(node* input);
 
   void leftRotate(node* input);
   void rightRotate(node* input);
 
+  bool isBlack(node* input);
+  bool isRed(node* input);
   
   node* head;
 };
