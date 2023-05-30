@@ -40,7 +40,6 @@ void RBT::deleteFun(int num)
     }
   else if(deleteNode->left != nullptr && deleteNode->right != nullptr)
     {//two childs
-      cout << "working 1" << endl;
       node* newNode = rightMost(deleteNode->left);
       deleteNode->value = newNode->value;
       deleteCheck(newNode, newNode->left);
@@ -89,11 +88,11 @@ void RBT::rightRotate(node* input)
   //change parent
   if(input != head)
     {
-      if(oPosition = 'L')
+      if(oPosition == 'L')
 	{
 	  parent->left = leftC;
 	}
-      else if(oPosition = 'R')
+      else if(oPosition == 'R')
 	{
 	  parent->right = leftC;
 	}
@@ -197,14 +196,12 @@ void RBT::deleteCheck(node* deleteNode, node* newNode)
   //deleteNode is red and newNode black
   if(isRed(deleteNode) && isBlack(newNode) )
     {
-      cout << "working 2" << endl;
       deleteNodeFun(deleteNode);
       return;
     }
   
   if(isBlack(deleteNode) && isRed(newNode))
     {
-      cout << "working 3" << endl;
       //deleteNode is black and newNode is red
       deleteNode->value = newNode->value;
       deleteNodeFun(newNode);
@@ -216,7 +213,6 @@ void RBT::deleteCheck(node* deleteNode, node* newNode)
 
       if(newNode == nullptr)
 	{
-	  cout << "newnode is null" << endl;
 	  tempNode->color = 'b';
 	  tempNode->position = deleteNode->position;
 	  tempNode->value = -1;
@@ -239,7 +235,6 @@ void RBT::deleteFix(node* newNode)
 {
   if(deleteCase1(newNode))
     {
-      cout << "case 1" << endl;
       return;
     }
   
@@ -262,8 +257,6 @@ void RBT::deleteFix(node* newNode)
 
 bool RBT::deleteCase6(node* newNode)
 {
-  cout << "case 6 working" << endl;
-  
   if(newNode == nullptr)
     {
       return false;
@@ -276,8 +269,6 @@ bool RBT::deleteCase6(node* newNode)
       if(newNode->position == 'R')
 	{//newNode on the right
 
-	  cout << "case 6, 1" << endl;
-	  
 	  node* sibling = parent->left;
 	  if(isBlack(newNode) && isBlack(sibling) && isRed(sibling->left))
 	    {
@@ -312,8 +303,6 @@ bool RBT::deleteCase6(node* newNode)
       else if(newNode->position == 'L')
 	{//newnode on the left
 
-	  cout << "case 6, 2" << endl;
-	  
 	  node* sibling = parent->right;
 	  if(isBlack(newNode) && isBlack(sibling) && isRed(sibling->right))
 	    {
@@ -360,12 +349,10 @@ bool RBT::deleteCase5(node* newNode)
 
   node* parent = newNode->parent;
 
-  if(parent->color == 'b' && isBlack(newNode))
+  if(isBlack(newNode))
     {
       if(newNode->position == 'R')
-	{
-	  cout << "case 5, 1" << endl;
-      
+	{      
 	  node* sibling = parent->left;
 	  if(isBlack(sibling) && isBlack(sibling->left) && isRed(sibling->right))
 	    {//node on the right
@@ -385,9 +372,7 @@ bool RBT::deleteCase5(node* newNode)
 	{
 	  node* sibling = parent->right;
 	  if(isBlack(sibling) && isBlack(sibling->right) && isRed(sibling->left))
-	    {
-	      cout << "case 5, 2" << endl;
-	      
+	    {     
 	      //change color
 	      sibling->color = 'r';
 	      sibling->left->color = 'b';
@@ -413,9 +398,8 @@ bool RBT::deleteCase4(node* newNode)
   if(newNode->position == 'L')
     {//when sibling on the right
       node* sibling = parent->right;
-      if(isBlack(newNode) && parent->color == 'r' && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
+      if(isBlack(newNode) && isRed(parent) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
 	{
-	  cout << "case4, 1" << endl;
 	  parent->color = 'b';
 	  sibling->color = 'r';
 	  return true;
@@ -425,9 +409,8 @@ bool RBT::deleteCase4(node* newNode)
     {
       //sibling on the left
       node* sibling = parent->left;
-      if(isBlack(newNode) && parent->color == 'r' && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
+      if(isBlack(newNode) && isRed(parent) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
 	{
-	  cout << "case 4, 2" << endl;
 	  parent->color = 'b';
 	  sibling->color = 'r';
 	  return true;
@@ -453,11 +436,9 @@ bool RBT::deleteCase2(node* newNode)
       if(sibling != nullptr && sibling->color == 'r')
 	{//sibling on the right
 
-	  cout << "delete case2, 1" << endl;
-
 	  //change color
-	  parent->color = 'r';
-	  sibling->color = 'b';
+	  switchColor(parent);
+	  switchColor(sibling);
 
 	  //tree rotation
 	  leftRotate(parent);
@@ -472,11 +453,9 @@ bool RBT::deleteCase2(node* newNode)
       if(sibling != nullptr && sibling->color == 'r')
 	{//sibling on the left
 
-	  cout << "delete case2, 2" << endl;
-
 	  //change color
-	  parent->color = 'r';
-	  sibling->color = 'b';
+	  switchColor(parent);
+	  switchColor(sibling);
 
 	  //right rotate
 	  rightRotate(parent);
@@ -504,8 +483,6 @@ bool RBT::deleteCase3(node* newNode)
 
       if(isBlack(parent) && isBlack(newNode) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
 	{
-	  cout << "case 3, 1" << endl;
-	  
 	  sibling->color = 'r';
 	  deleteFix(parent);
 	  return true;
@@ -518,8 +495,6 @@ bool RBT::deleteCase3(node* newNode)
 
       if(isBlack(parent) && isBlack(newNode) && isBlack(sibling) && isBlack(sibling->left) && isBlack(sibling->right))
 	{
-	  cout << "case 3, 2" << endl;
-	  
 	  sibling->color = 'r';
 	  deleteFix(parent);
 	  return true;
@@ -535,7 +510,6 @@ bool RBT::deleteCase1(node* newNode)
   //if deleteNode is head
   if(head == newNode)
     {
-      cout << "case 1" << endl;
       return true;
     }
   else
@@ -546,9 +520,6 @@ bool RBT::deleteCase1(node* newNode)
 
 void RBT::deleteNodeFun(node* input)
 {
-
-  cout << "working 4" << endl;
-  
   node* parent = input->parent;
   node* leftC = input->left;
   node* rightC = input->right;
