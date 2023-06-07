@@ -90,7 +90,6 @@ void Graph::addEdge(char A, char B, int weight)
   if((*numTable)[horiLocation][vertLocation] == -1)
     {
       (*numTable)[horiLocation][vertLocation] = weight;
-      (*numTable)[vertLocation][horiLocation] = weight;
     }
   else
     {
@@ -167,7 +166,6 @@ void Graph::removeEdge(char A, char B)
 
   //remove edge
   (*numTable)[locationA][locationB] = -1;
-  (*numTable)[locationB][locationA] = -1; 
 }
 
 void Graph::shortPath(char A, char B)
