@@ -1,3 +1,8 @@
+/*This is the main file of the graph creator project.
+  Written by Eric Chen
+  June 6, 2023
+*/
+
 #include <iostream>
 #include "Graph.h"
 #include <cstring>
@@ -18,7 +23,10 @@ int main()
       cout << "\"addV\" to add a vertex" << endl << "\"addE\" to add an edge" << endl;
       cout << "\"removeV\" to remove a vertex" << endl << "\"removeE\" to remove an edge" << endl;
       cout << "\"shortPath\" to find the shortest path bewteen two vertices" << endl;
+      cout << "\"Print\" to print out the table." << endl;
       cout << "\"Quit\" to quit" << endl << endl;
+
+      cout << "Finding short path does not work btw, don't test it :)" << endl;
 
       char input[100];
       cin >> input;

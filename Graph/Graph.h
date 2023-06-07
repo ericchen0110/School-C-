@@ -23,6 +23,9 @@ class Graph {
   bool unvisitedFun(char input, vector<char> *unvisited);
   int findVerLocation(char input);
   int findVerDistanceNum(char input, char vertexArr[]);
+  void beginning(vector<char> *vistied, vector<char> *unvisited, char vertexArr[], int distance[], char previousV[], int position);
+  void calculateDistance(int currentLocation, int nextLocation, int thisDistance, char vertexArr[], int distance[], char previousV[]);
+  int outputFun(char A, char vertexArr[], int distance[], char previousV[], int outputPosition, int outputNum);
   
   void printFun();
   

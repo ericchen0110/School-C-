@@ -39,6 +39,10 @@ void Graph::addVertex(char input)
 	  numTable->push_back(*temp);
 	}
     }
+  else
+    {
+      cout << "This vertex already exists" << endl;
+    }
 }
 
 void Graph::addEdge(char A, char B, int weight)
@@ -196,9 +200,9 @@ void Graph::shortPath(char A, char B)
   int vertexNum = charVec->size();
   
   //make the output array
-  char vertexArr[vertexNum];
-  int distance[vertexNum];
-  char previousV[vertexNum];
+  char *vertexArr = new char[vertexNum];
+  int *distance = new int[vertexNum];
+  char *previousV = new char[vertexNum];
 
   //initialize arrays
   for(int i=starting; i < charVec->size(); i++)
@@ -230,47 +234,113 @@ void Graph::shortPath(char A, char B)
 
   //visit unvisted vertex with shortest distance from the start
   int position = 0;
-  while(unvisited->size() != 0)
+
+  beginning(visited, unvisited, vertexArr, distance, previousV, position);
+
+  //output the result
+  int outputPosition = findVerDistanceNum(B, vertexArr);
+  int outputNum = 0;
+  //outputNum = outputFun(A, vertexArr, distance, previousV, outputPosition, 0);
+
+
+  
+  cout << "The shortest path is " << outputNum << endl;
+
+  cout << vertexArr[0] << " Distance: " << distance[0] << endl;
+  cout << vertexArr[0] << " Previous: " << previousV[0] << endl;
+  cout << vertexArr[1] << " Distance: " << distance[1] << endl;
+  cout << vertexArr[1] << " Previous: " << previousV[1] << endl;
+  cout << vertexArr[2] << " Distance: " << distance[2] << endl;
+  cout << vertexArr[2] << " Previous: " << previousV[2] << endl;
+  
+}
+
+int Graph::outputFun(char A, char vertexArr[], int distance[], char previousV[], int outputPosition, int outputNum)
+{
+  //cout << "Output Position" << outputPosition << endl;
+  
+  if(previousV[outputPosition] == A)
     {
-      char current = smallestUnvisited(vertexArr, distance, vertexNum, visited);
+      outputNum += distance[outputPosition];
+      return outputNum;
+    }
 
-      int currentLocation = -1;
-      for(int i=0; i < vertexNum; i++)
-	{
-	  if((*charVec)[i] == current)
-	    {
-	      currentLocation = i;
-	      break;
-	    }
+  outputNum += distance[outputPosition];
+  
+  //change outputPosition
+  int temp = 0;
+  temp = findVerDistanceNum(previousV[outputPosition], vertexArr);
+  outputPosition = temp;
+  
+  return outputFun(A, vertexArr, distance, previousV, outputPosition, outputNum);
+}
+
+void Graph::beginning(vector<char> *visited, vector<char> *unvisited, char vertexArr[], int distance[], char previousV[], int position)
+{
+  //check if the unvisited is zero
+  if(visited->size() == charVec->size())
+    {
+      return;
+    }
+
+  //visit unvisited vertex with shortest distance from the start
+  char current = smallestUnvisited(vertexArr, distance, charVec->size(), visited);
+  
+  //calculate the distance from current to unvisited neighbours
+  int nextLocation = -1;
+  for(int i=0; i < charVec->size(); i++)
+    {
+      nextLocation = findVerLocation(vertexArr[i]);
+
+      if((*numTable)[position][nextLocation] > 0 && unvisitedFun(vertexArr[i], unvisited))
+	 {	  
+	  int thisDistance = (*numTable)[position][nextLocation];
+	  calculateDistance(position, i, thisDistance, vertexArr, distance, previousV);
 	}
+    }
 
-      //calculate the distance from current to unvisited neighbours
-      int currentD = 0;
-      for(int i=0; i < vertexNum; i++)
+  //update visited and unvisited arrays
+  visited->push_back(vertexArr[position]);
+
+  for(int i=0; i < unvisited->size(); i++)
+    {
+      if((*unvisited)[i] == vertexArr[position])
 	{
-	  if((*numTable)[currentLocation][i] > 0 && unvisitedFun(current, unvisited))
-	    {
-	      currentD = distance[position] + (*numTable)[currentLocation][i];
-	      
-	      if(currentD < distance[findVerDistanceNum((*charVec)[i], vertexArr)])
-		{
-		  distance[findVerDistanceNum((*charVec)[i], vertexArr)] = currentD;
-		  previousV[findVerDistanceNum((*charVec)[i], vertexArr)] = (*charVec)[position];
-		}
-	    }
+	  unvisited->erase(unvisited->begin() + i);
 	}
+    }
+  
+  //recursion
+  position += 1;
+  beginning(visited, unvisited, vertexArr, distance, previousV, position);
+}
 
-      visited->push_back(vertexArr[position]);
+void Graph::calculateDistance(int currentLocation, int nextLocation, int thisDistance, char vertexArr[], int distance[], char previousV[])
+{  
+  int currentDistance = -1;
 
-      int thisPosition = 0;
-      for(int i=0; i < unvisited->size(); i++)
-	{
-	  if((*unvisited)[i] == vertexArr[position])
-	    {
-	      thisPosition = i;
-	    }
-	}
-      unvisited->erase(unvisited->begin() + thisPosition);
+  if(previousV[currentLocation] == '\0')
+    {
+      currentDistance = 0;
+    }
+  else
+    {
+      int lastLocation = findVerDistanceNum(previousV[currentLocation], vertexArr);
+      currentDistance = distance[lastLocation];
+    }
+
+  //add the distance
+  currentDistance += thisDistance;
+
+  //compare to current distance
+
+  cout << "Current distance: " << currentDistance << endl;
+  cout << "Distance in the table: " << distance[nextLocation] << endl;
+  
+  if(currentDistance < distance[nextLocation])
+    {
+      distance[nextLocation] = currentDistance;
+      previousV[nextLocation] = vertexArr[currentLocation];
     }
 }
 
@@ -307,11 +377,11 @@ bool Graph::unvisitedFun(char input, vector<char> *unvisited)
     {
       if(input == (*unvisited)[i])
 	{
-	  return false;
+	  return true;
 	}
     }
 
-  return true;
+  return false;
 }
 
 char Graph::smallestUnvisited(char vertexArr[], int distance[], int vertexNum, vector<char> *visited)
@@ -329,7 +399,7 @@ char Graph::smallestUnvisited(char vertexArr[], int distance[], int vertexNum, v
 	  returnValue = vertexArr[i];
 	}
     }
-
+  
   for(int i=0; i < visited->size(); i++)
     {
       if((*visited)[i] == returnValue)
